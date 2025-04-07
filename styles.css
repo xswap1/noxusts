@@ -1,0 +1,1052 @@
+/* --- Variables CSS Estilo Akatsuki --- */
+:root {
+  --akatsuki-black: #000000;
+  --akatsuki-dark-bg: #111111;
+  --akatsuki-red: #CC0000;
+  --akatsuki-white: #FFFFFF;
+  --akatsuki-light-gray: #CCCCCC;
+  --akatsuki-dark-gray: #333333; /* Ajustado para más contraste en cards */
+  --footer-text-color: #666666;
+  --header-height: 70px;
+  --font-primary: 'Oswald', sans-serif;
+  --font-secondary: 'Roboto', sans-serif;
+  --preloader-fade-duration: 0.8s;
+  /* Variables para el fondo de estrellas */
+  --star-size: 1.2px;
+  --star-color: rgba(204, 204, 204, 0.7);
+  --stars-small:
+        5% 10% 0 0 var(--star-color), 15% 80% 0 0 var(--star-color),
+        25% 30% 0 0 var(--star-color), 35% 90% 0 0 var(--star-color),
+        45% 50% 0 0 var(--star-color), 55% 20% 0 0 var(--star-color),
+        65% 75% 0 0 var(--star-color), 75% 40% 0 0 var(--star-color),
+        85% 95% 0 0 var(--star-color), 95% 15% 0 0 var(--star-color),
+        10% 5% 0 0 var(--star-color), 80% 15% 0 0 var(--star-color),
+        30% 25% 0 0 var(--star-color), 90% 35% 0 0 var(--star-color),
+        50% 45% 0 0 var(--star-color), 20% 55% 0 0 var(--star-color),
+        75% 65% 0 0 var(--star-color), 40% 75% 0 0 var(--star-color),
+        95% 85% 0 0 var(--star-color), 15% 95% 0 0 var(--star-color);
+  --stars-medium:
+        10% 40% 0 calc(var(--star-size) / 2) var(--star-color), 30% 10% 0 calc(var(--star-size) / 2) var(--star-color),
+        50% 70% 0 calc(var(--star-size) / 2) var(--star-color), 70% 20% 0 calc(var(--star-size) / 2) var(--star-color),
+        90% 60% 0 calc(var(--star-size) / 2) var(--star-color), 20% 90% 0 calc(var(--star-size) / 2) var(--star-color),
+        40% 5% 0 calc(var(--star-size) / 2) var(--star-color), 60% 85% 0 calc(var(--star-size) / 2) var(--star-color),
+        80% 35% 0 calc(var(--star-size) / 2) var(--star-color), 5% 65% 0 calc(var(--star-size) / 2) var(--star-color);
+  /* Variables para animación team */
+  --team-animation-distance: 100px;
+  --team-animation-blur: 8px;
+  --team-animation-scaleX: 1.2;
+  --team-animation-duration: 0.8s;
+  --team-animation-timing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* --- Reset básico --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border-color: var(--akatsuki-dark-gray);
+}
+html {
+  scroll-padding-top: var(--header-height);
+  scroll-behavior: smooth;
+}
+body {
+  width: 100%;
+  font-family: var(--font-secondary);
+  background-color: var(--akatsuki-black);
+  color: var(--akatsuki-light-gray);
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+}
+body.loading {
+  overflow-y: hidden;
+}
+
+/* --- tsParticles Container --- */
+#tsparticles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* --- Preloader --- */
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--akatsuki-black);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity var(--preloader-fade-duration) cubic-bezier(0.4, 0, 0.2, 1),
+              visibility var(--preloader-fade-duration) cubic-bezier(0.4, 0, 0.2, 1);
+}
+#preloader.loaded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+#preloader-logo-container {
+  text-align: center;
+}
+#preloader-logo {
+  max-width: 120px;
+  height: auto;
+  opacity: 1;
+  transform: scale(1);
+  filter: grayscale(80%) brightness(0.6);
+  animation: palpitateLoad 1.3s ease-in-out infinite;
+}
+@keyframes palpitateLoad {
+  0%, 100% { filter: grayscale(80%) brightness(0.6); transform: scale(1); }
+  50% { filter: grayscale(50%) brightness(1.0); transform: scale(1.03); }
+}
+
+/* --- HEADER --- */
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: var(--header-height);
+  padding: 0 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  border-bottom: 1px solid var(--akatsuki-dark-gray);
+}
+.logo {
+  font-family: var(--font-primary);
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--akatsuki-white);
+  text-decoration: none;
+  text-shadow: 1px 1px 3px rgba(204, 0, 0, 0.5);
+}
+.main-nav ul {
+  list-style: none;
+  display: flex;
+}
+.main-nav ul li {
+  margin-left: 35px;
+}
+.main-nav ul li a {
+  text-decoration: none;
+  color: var(--akatsuki-light-gray);
+  font-size: 1rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.3s ease, border-bottom-color 0.3s ease;
+  padding-bottom: 5px;
+  border-bottom: 2px solid transparent;
+}
+.main-nav ul li a:hover {
+  color: var(--akatsuki-red);
+}
+.main-nav ul li a.active {
+  color: var(--akatsuki-red);
+  border-bottom-color: var(--akatsuki-red);
+}
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--akatsuki-white);
+  font-size: 2.2rem;
+  cursor: pointer;
+  z-index: 1100;
+  transition: color 0.3s ease;
+}
+.menu-toggle:hover {
+  color: var(--akatsuki-red);
+}
+
+/* --- HERO SECTION --- */
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--header-height) 20px 20px;
+  overflow: hidden;
+  background-color: var(--akatsuki-black);
+}
+.hero video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  object-fit: cover;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 1;
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: 0 auto;
+  animation: fadeIn 1s ease-in-out;
+}
+.hero-content h1 {
+  font-family: var(--font-primary);
+  font-size: clamp(3.5rem, 10vw, 6rem);
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  color: var(--akatsuki-red);
+  text-shadow: 0 0 8px rgba(204, 0, 0, 0.6),
+               0 0 15px rgba(204, 0, 0, 0.4),
+               1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+.hero-content h1 span {
+  display: inline-block;
+  opacity: 1;
+  transform: translateX(0);
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease-out;
+  margin: 0 0.05em;
+  will-change: transform, opacity;
+}
+.hero-content h1.animate-out span {
+  opacity: 0;
+}
+.hero-content h1.animate-out span:nth-child(odd) {
+  transform: translateX(-80px);
+}
+.hero-content h1.animate-out span:nth-child(even) {
+  transform: translateX(80px);
+}
+.hero-content p {
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+  margin-bottom: 40px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--akatsuki-light-gray);
+}
+.hero-content a.cta {
+  display: inline-block;
+  padding: 15px 40px;
+  background: transparent;
+  color: var(--akatsuki-red);
+  border: 2px solid var(--akatsuki-red);
+  text-decoration: none;
+  font-weight: 700;
+  font-family: var(--font-primary);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 0 10px rgba(204, 0, 0, 0.3);
+  cursor: pointer;
+  position: relative;
+  z-index: 3;
+}
+.hero-content a.cta:hover {
+  background: var(--akatsuki-red);
+  color: var(--akatsuki-black);
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(204, 0, 0, 0.6);
+}
+
+/* --- SECCIONES ADICIONALES (General) --- */
+.section {
+  padding: 100px 40px;
+  text-align: center;
+  border-top: 1px solid var(--akatsuki-dark-gray);
+  position: relative;
+  overflow: hidden; /* Importante para contener elementos absolutos */
+  background-color: var(--akatsuki-black); /* Fondo por defecto */
+}
+.section .section-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px; /* Reducido para centrar más el título */
+  margin-left: auto;
+  margin-right: auto;
+}
+.section h2 {
+  font-family: var(--font-primary);
+  font-size: 3rem;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--akatsuki-white);
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+.section h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background-color: var(--akatsuki-red);
+}
+.section p {
+  font-size: 1.1rem;
+  margin: 0 auto 30px auto;
+  line-height: 1.7;
+  color: var(--akatsuki-light-gray);
+  max-width: 800px; /* Para que coincida con el section-content */
+}
+
+/* --- Fondo de Estrellas --- */
+.star-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+.star-background::before,
+.star-background::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  box-shadow: var(--stars-small);
+  animation: twinkle 15s linear infinite alternate;
+}
+.star-background::after {
+  width: calc(var(--star-size) * 1.5);
+  height: calc(var(--star-size) * 1.5);
+  box-shadow: var(--stars-medium);
+  animation: twinkle 20s linear infinite alternate;
+  animation-delay: -5s;
+}
+@keyframes twinkle {
+  0% { opacity: 0.6; transform: scale(0.95) translateY(-5px); }
+  50% { opacity: 1.0; transform: scale(1) translateY(0); }
+  100% { opacity: 0.6; transform: scale(0.95) translateY(5px); }
+}
+
+
+/* --- Membership Packs (#new-section) --- */
+#new-section {
+  overflow: hidden;
+  background-color: var(--akatsuki-dark-bg);
+}
+.packs-container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-top: 50px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  perspective: 1000px;
+}
+.pack-card {
+  background-color: var(--akatsuki-dark-gray);
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 35px 30px;
+  text-align: left;
+  flex: 1;
+  min-width: 280px;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              box-shadow 0.4s ease-out;
+}
+.pack-card:hover {
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+  transform: scale(1.05) rotate(3deg);
+}
+.packs-container > *:nth-child(3n+1):hover {
+  transform: scale(1.05) rotate(-3deg);
+}
+.packs-container > *:nth-child(3n+3):hover {
+  transform: scale(1.05) rotate(3deg);
+}
+.packs-container > *:nth-child(3n+2):hover {
+  transform: scale(1.05) rotate(0deg);
+}
+.tag.popular-tag {
+  position: absolute;
+  top: 18px;
+  right: -35px;
+  width: 140px;
+  padding: 6px 0;
+  background-color: var(--akatsuki-red);
+  color: var(--akatsuki-white);
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(45deg);
+  transform-origin: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+  line-height: 1.3;
+  letter-spacing: 0.5px;
+}
+.pack-card.popular {
+  box-shadow: 0 6px 25px rgba(204, 0, 0, 0.25);
+}
+.pack-card.popular:hover {
+  box-shadow: 0 12px 40px rgba(204, 0, 0, 0.4);
+}
+.pack-header {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #555;
+  margin-top: 10px;
+}
+.pack-card h3 {
+  font-family: var(--font-primary);
+  font-size: 1.8rem;
+  color: var(--akatsuki-white);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  display: block;
+}
+.pack-card .price {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--akatsuki-red);
+  margin-bottom: 5px;
+}
+.pack-card .price .duration {
+  font-size: 0.9rem;
+  font-weight: normal;
+  color: var(--akatsuki-light-gray);
+  display: block;
+  margin-top: 3px;
+}
+.features-list {
+  list-style: none;
+  margin-bottom: 30px;
+  padding-left: 0;
+  flex-grow: 1;
+}
+.features-list li {
+  margin-bottom: 12px;
+  padding-left: 20px;
+  position: relative;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.features-list li::before {
+  content: '✓';
+  color: var(--akatsuki-red);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  font-weight: bold;
+}
+.features-list li em {
+  font-style: italic;
+  color: var(--akatsuki-light-gray);
+  display: block;
+  margin-bottom: 8px;
+}
+.features-list li em::before {
+  content: '';
+}
+.nested-list {
+  list-style: none;
+  padding-left: 15px;
+  margin-top: 8px;
+}
+.nested-list li::before {
+  content: '›';
+  color: var(--akatsuki-light-gray);
+  top: 0px;
+}
+.cta-button {
+  display: block;
+  width: 100%;
+  padding: 12px 20px;
+  background-color: var(--akatsuki-red);
+  color: var(--akatsuki-white);
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: auto;
+}
+.cta-button:hover {
+  background-color: #A00000;
+  transform: scale(1.03);
+}
+.payment-note {
+  font-size: 0.95rem;
+  color: var(--akatsuki-light-gray);
+  margin-top: -10px;
+  margin-bottom: 40px;
+  font-style: italic;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Sección #about --- */
+#about {
+  background-color: var(--akatsuki-black) !important;
+  position: relative;
+  overflow: hidden;
+  padding: 140px 40px;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: auto !important; /* Asegura visibilidad del fondo de estrellas */
+}
+#about .section-content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  text-align: center;
+}
+#about h2 {
+  font-size: clamp(2.8rem, 6vw, 4.5rem);
+  margin-bottom: 40px;
+  color: var(--akatsuki-red);
+  text-shadow: 0 0 6px rgba(204, 0, 0, 0.5);
+  display: block;
+}
+#about h2::after {
+  display: none;
+}
+#about p {
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  line-height: 1.7;
+  margin-bottom: 25px;
+  color: var(--akatsuki-light-gray);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- Sección Focus & Guidance (#focus-guidance) --- */
+.focus-guidance-section {
+  padding: 0;
+  border-top: 1px solid var(--akatsuki-dark-gray);
+  background-color: var(--akatsuki-dark-bg);
+  overflow: hidden;
+}
+.focus-guidance-container {
+  display: flex;
+  min-height: 70vh;
+  align-items: stretch;
+}
+.focus-guidance-image {
+  flex-basis: 50%;
+  /* !! ACTUALIZA ESTA RUTA SI CAMBIAS LA IMAGEN !! */
+  background-image: url('car.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.focus-guidance-text {
+  flex-basis: 50%;
+  background-color: var(--akatsuki-dark-gray);
+  padding: 60px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--akatsuki-light-gray);
+}
+.focus-guidance-text .focus-intro {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--akatsuki-light-gray);
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+.focus-guidance-text h2 {
+  font-family: var(--font-primary);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: var(--akatsuki-white);
+  margin-bottom: 25px;
+  line-height: 1.3;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+.focus-guidance-text h2::after {
+    display: none;
+}
+.focus-guidance-text p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+  max-width: 550px;
+}
+.focus-guidance-text .focus-cta {
+  margin-top: 20px;
+  align-self: flex-start;
+  padding: 12px 35px;
+}
+
+/* --- ================== NUEVA SECCIÓN TEAM (#team) ================== --- */
+#team {
+  background-color: var(--akatsuki-dark-bg); /* Fondo oscuro para la sección */
+}
+.team-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra las tarjetas horizontalmente */
+  gap: 60px; /* Espacio entre tarjetas de miembros */
+  margin-top: 50px;
+  max-width: 850px; /* Ancho máximo del contenedor de tarjetas */
+  margin-left: auto;
+  margin-right: auto;
+}
+.team-member-card {
+  display: flex;
+  align-items: center; /* Centra verticalmente imagen y texto */
+  background-color: var(--akatsuki-dark-gray); /* Fondo de la tarjeta */
+  border-radius: 8px;
+  border: 1px solid #444;
+  padding: 30px;
+  width: 100%; /* Ocupa el ancho del .team-container */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  overflow: hidden; /* Para contener la imagen */
+}
+.team-member-image {
+  flex: 0 0 180px; /* Ancho fijo para la imagen */
+  height: 180px; /* Altura fija para la imagen */
+  margin-right: 30px;
+  border-radius: 50%; /* Hace la imagen redonda */
+  overflow: hidden; /* Asegura que la imagen no se salga del círculo */
+  border: 3px solid var(--akatsuki-red); /* Borde rojo */
+  box-shadow: 0 0 10px rgba(204, 0, 0, 0.4);
+}
+.team-member-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Escala la imagen para cubrir el contenedor */
+}
+.team-member-info {
+  flex: 1; /* Ocupa el espacio restante */
+  text-align: left;
+}
+.team-member-info h3 {
+  font-family: var(--font-primary);
+  font-size: 1.8rem;
+  color: var(--akatsuki-white);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+.team-member-info h4 {
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  color: var(--akatsuki-red);
+  margin-bottom: 15px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.team-member-info p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--akatsuki-light-gray);
+  margin-bottom: 0; /* Quita margen inferior del último párrafo */
+}
+
+/* -- Animación Scroll para Team Cards -- */
+.team-member-card.animate-on-scroll {
+  opacity: 0;
+  filter: blur(var(--team-animation-blur));
+  transition: opacity var(--team-animation-duration) var(--team-animation-timing),
+              transform var(--team-animation-duration) var(--team-animation-timing),
+              filter var(--team-animation-duration) var(--team-animation-timing);
+  will-change: opacity, transform, filter;
+}
+/* Estado inicial - Mover a la izquierda */
+.team-member-card.animate-on-scroll[data-animation-direction="left"] {
+  transform: translateX(calc(-1 * var(--team-animation-distance))) scaleX(var(--team-animation-scaleX));
+}
+/* Estado inicial - Mover a la derecha */
+.team-member-card.animate-on-scroll[data-animation-direction="right"] {
+  transform: translateX(var(--team-animation-distance)) scaleX(var(--team-animation-scaleX));
+}
+/* Estado final - Visible */
+.team-member-card.animate-on-scroll.in-view {
+  opacity: 1;
+  transform: translateX(0) scaleX(1);
+  filter: blur(0);
+}
+/* --- FIN ESTILOS TEAM --- */
+
+
+/* --- Sección Contacto (#contact) --- */
+#contact {
+  background: var(--akatsuki-dark-bg);
+}
+#contact .section-content h2 {
+  color: var(--akatsuki-white);
+}
+#contact .section-content p {
+  color: var(--akatsuki-light-gray);
+}
+
+/* --- FOOTER --- */
+footer {
+  background: var(--akatsuki-black);
+  color: var(--footer-text-color);
+  text-align: center;
+  padding: 50px 20px;
+  border-top: 1px solid var(--akatsuki-dark-gray);
+  position: relative;
+  z-index: 5;
+}
+footer p {
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+.social-links a {
+  color: var(--footer-text-color);
+  margin: 0 12px;
+  font-size: 1.5rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+}
+.social-links a:hover {
+  color: var(--akatsuki-red);
+  transform: scale(1.2);
+}
+
+/* --- RESPONSIVE DESIGN --- */
+@media (max-width: 992px) {
+  .packs-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+  }
+  .pack-card {
+    max-width: 500px;
+    width: 90%;
+    min-width: unset;
+  }
+  .pack-card:hover,
+  .packs-container > *:nth-child(n):hover {
+    transform: scale(1.03);
+  }
+  .tag.popular-tag {
+    top: 15px;
+    right: -40px;
+    width: 130px;
+    font-size: 0.75rem;
+    padding: 5px 0;
+  }
+
+  /* Responsividad para Focus & Guidance */
+  .focus-guidance-container {
+    flex-direction: column;
+  }
+  .focus-guidance-image {
+    flex-basis: auto;
+    min-height: 350px;
+    order: 1;
+  }
+  .focus-guidance-text {
+    flex-basis: auto;
+    padding: 40px 30px;
+    order: 2;
+    text-align: center;
+  }
+  .focus-guidance-text h2 {
+     font-size: clamp(1.8rem, 5vw, 2.2rem);
+  }
+   .focus-guidance-text p {
+     max-width: 100%;
+     font-size: 1rem;
+     margin-left: auto;
+     margin-right: auto;
+  }
+  .focus-guidance-text .focus-cta {
+    align-self: center;
+  }
+
+  /* Responsividad para Team Section */
+  .team-container {
+    gap: 40px;
+    max-width: 90%; /* Ocupa más ancho en tablet */
+  }
+  .team-member-card {
+    padding: 25px;
+  }
+  .team-member-image {
+    flex: 0 0 150px;
+    height: 150px;
+    margin-right: 25px;
+  }
+  .team-member-info h3 {
+    font-size: 1.6rem;
+  }
+  .team-member-info h4 {
+    font-size: 0.9rem;
+  }
+  .team-member-info p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 0 20px;
+  }
+  .logo {
+    font-size: 1.6rem;
+  }
+  .menu-toggle {
+    display: block;
+  }
+  .main-nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 80%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(5px);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    padding-top: calc(var(--header-height) + 20px);
+    z-index: 1050;
+    border-left: 1px solid var(--akatsuki-dark-gray);
+  }
+  .main-nav.is-active {
+    transform: translateX(0);
+  }
+  .main-nav ul {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 30px;
+  }
+  .main-nav ul li {
+    margin-left: 0;
+    margin-bottom: 35px;
+  }
+  .main-nav ul li a {
+    font-size: 1.3rem;
+    color: var(--akatsuki-white);
+  }
+  .main-nav ul li a.active {
+    border-bottom-color: transparent;
+    color: var(--akatsuki-red);
+  }
+  .hero-content h1 {
+    font-size: clamp(2.8rem, 12vw, 4rem);
+  }
+  .hero-content h1 span {
+    margin: 0;
+  }
+  .hero-content p {
+    font-size: clamp(1rem, 3vw, 1.1rem);
+  }
+  .hero-content a.cta {
+    padding: 12px 30px;
+  }
+  .section {
+    padding: 80px 20px;
+  }
+  .section h2 {
+    font-size: 2.5rem;
+  }
+  .section h2::after {
+    width: 50px;
+    height: 2px;
+  }
+  .section p {
+    font-size: 1rem;
+  }
+  .pack-card {
+    padding: 25px 20px;
+  }
+  .pack-card h3 {
+    font-size: 1.6rem;
+  }
+  .pack-card .price {
+    font-size: 1.4rem;
+  }
+  .features-list li {
+    font-size: 0.9rem;
+  }
+  .cta-button {
+    font-size: 0.9rem;
+    padding: 10px 15px;
+  }
+  .tag.popular-tag {
+    top: 12px;
+    right: -45px;
+    width: 110px;
+    font-size: 0.7rem;
+    padding: 4px 0;
+  }
+  .payment-note {
+    font-size: 0.85rem;
+    margin-bottom: 30px;
+  }
+  /* Ajustes responsivos para #about */
+  #about {
+    padding: 100px 20px;
+    min-height: 60vh;
+  }
+  #about h2 {
+    font-size: clamp(2.2rem, 8vw, 3rem);
+    margin-bottom: 30px;
+  }
+  #about p {
+    font-size: clamp(1rem, 3.5vw, 1.1rem);
+  }
+  /* Responsividad para Focus & Guidance (móvil pequeño) */
+   .focus-guidance-image {
+       min-height: 300px;
+   }
+    .focus-guidance-text {
+        padding: 35px 25px;
+    }
+
+  /* Responsividad para Team Section (móvil) */
+  .team-container {
+      max-width: 100%; /* Ocupa todo el ancho disponible */
+      gap: 30px;
+  }
+  .team-member-card {
+      flex-direction: column; /* Apila imagen y texto */
+      text-align: center;
+      padding: 20px;
+  }
+  .team-member-image {
+      flex: 0 0 120px; /* Imagen más pequeña en móvil */
+      height: 120px;
+      margin-right: 0;
+      margin-bottom: 20px; /* Espacio debajo de la imagen */
+  }
+  .team-member-info {
+      text-align: center;
+  }
+  .team-member-info h3 {
+      font-size: 1.5rem;
+  }
+  .team-member-info h4 {
+      font-size: 0.85rem;
+  }
+  .team-member-info p {
+      font-size: 0.85rem;
+  }
+  /* Ajustar animación para móvil si es necesario (opcional) */
+  :root {
+     --team-animation-distance: 60px;
+     --team-animation-blur: 5px;
+  }
+}
+
+/* --- Animaciones --- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Dollar Rain --- */
+.dollar-sign {
+  position: fixed;
+  top: -50px;
+  font-size: 1.8rem;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  user-select: none;
+  pointer-events: none;
+  z-index: 990;
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+@keyframes fall {
+  0% { transform: translateY(0vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* --- Animaciones de Scroll (Generales) --- */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px); /* Animación por defecto más simple */
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  will-change: opacity, transform;
+}
+.animate-on-scroll.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Asegurar que las animaciones específicas del Team anulen la general */
+.team-member-card.animate-on-scroll {
+  /* Hereda will-change, transition de las reglas de Team */
+  /* Anula transform y opacity iniciales */
+  transform: translateY(0); /* Resetear translateY para que no interfiera */
+  /* El resto de transform (translateX, scaleX) se aplica abajo */
+  /* La opacidad y el filtro se gestionan en las reglas específicas de Team */
+}
+.team-member-card.animate-on-scroll[data-animation-direction="left"] {
+  opacity: 0;
+  filter: blur(var(--team-animation-blur));
+  transform: translateX(calc(-1 * var(--team-animation-distance))) scaleX(var(--team-animation-scaleX));
+}
+.team-member-card.animate-on-scroll[data-animation-direction="right"] {
+  opacity: 0;
+  filter: blur(var(--team-animation-blur));
+  transform: translateX(var(--team-animation-distance)) scaleX(var(--team-animation-scaleX));
+}
+.team-member-card.animate-on-scroll.in-view {
+  opacity: 1;
+  transform: translateX(0) scaleX(1);
+  filter: blur(0);
+}

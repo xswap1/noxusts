@@ -368,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // !!! MUY IMPORTANTE: REEMPLAZA ESTA URL DE EJEMPLO !!!
         // Debes reemplazarla con la URL que obtengas al desplegar tu Google Apps Script como Web App.
-        const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzpufI2ptQlqLW_Tym0G381LuFv6HzdapzexkcpDa1NARNY_lwLEISxQoAzEckxJJfE/exec';
+        const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbylxjvSMWq1_3gVlRiIV92mSeW0VxPRVt2_OX7fpmO1F-zLkaWUvtM32CCs5MNdsR6R/exec';
 
         generateButton.addEventListener('click', async () => {
             const identifier = referralIdentifierInput.value.trim();

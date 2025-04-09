@@ -37,6 +37,12 @@
   --team-animation-scaleX: 1.2;
   --team-animation-duration: 0.8s;
   --team-animation-timing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Variables para animación Choice/Comparison */
+  --choice-anim-duration: 0.7s;
+  --choice-anim-timing: ease-out;
+  --choice-anim-delay: 0.1s; /* Delay base opcional */
+  --choice-anim-distance-y: 50px;
+  --choice-anim-distance-x: 70px;
 }
 
 /* --- Reset básico --- */
@@ -278,23 +284,85 @@ header {
   box-shadow: 0 0 15px rgba(204, 0, 0, 0.6);
 }
 
+/* === Estilos para el Texto Desplazable === */
+.scrolling-text-container {
+  width: 100%; /* Ocupa todo el ancho */
+  overflow: hidden; /* Oculta el texto que se salga */
+  background-color: #000; /* O el color de fondo que prefieras, ej: transparent */
+  padding: 2rem 0; /* Espaciado vertical */
+  margin: 0; /* Sin margen extra por defecto */
+  white-space: nowrap; /* Evita que el texto interno se divida en múltiples líneas */
+  position: relative; /* Necesario si usas posicionamiento absoluto dentro, aunque aquí usaremos transform */
+  border-top: 1px solid var(--akatsuki-dark-gray); /* Línea divisoria superior */
+  border-bottom: 1px solid var(--akatsuki-dark-gray); /* Línea divisoria inferior */
+}
+
+.scrolling-text {
+  display: inline-block; /* Permite aplicar transform y que respete el nowrap */
+  font-family: 'Oswald', sans-serif; /* Misma fuente que el título del hero */
+  font-weight: 700;
+  font-size: 6rem; /* Tamaño grande, ajústalo a tu gusto (puedes usar vw también, ej: 8vw) */
+  color: #FFF; /* Color del texto, ajusta si es necesario */
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase; /* Opcional: para que sea todo mayúsculas */
+  will-change: transform; /* Optimización para el navegador */
+  /* La posición inicial (translateX) será manejada por JavaScript */
+  transform: translateX(5%); /* Un ligero desplazamiento inicial para que no empiece pegado al borde izquierdo */
+  transition: transform 0.5s ease-out; /* Suaviza el movimiento al dejar de scrollear (opcional) */
+}
+
+/* Ajuste responsivo opcional para el tamaño de fuente del texto desplazable */
+@media (max-width: 768px) {
+  .scrolling-text {
+    font-size: 4rem; /* Más pequeño en móviles */
+  }
+}
+
+@media (max-width: 480px) {
+  .scrolling-text {
+    font-size: 3rem; /* Aún más pequeño */
+  }
+}
+/* === Fin Estilos Texto Desplazable === */
+
+
 /* --- SECCIONES ADICIONALES (General) --- */
 .section {
   padding: 100px 40px;
   text-align: center;
   border-top: 1px solid var(--akatsuki-dark-gray);
   position: relative;
-  overflow: hidden; /* Importante para contener elementos absolutos */
+  overflow: visible; /* Cambiado a visible para permitir animaciones/hovers fuera de bounds si es necesario */
   background-color: var(--akatsuki-black); /* Fondo por defecto */
 }
+/* Quitamos el borde superior general si la sección anterior era el texto scrollable */
+.scrolling-text-container + .section {
+    border-top: none;
+}
+/* Quitamos el borde superior si la sección anterior es la de packs */
+#new-section + #choice-comparison { /* Actualizado para la nueva sección */
+    border-top: none;
+}
+/* Aseguramos que la sección about tenga borde si la sección anterior es la fusionada */
+#choice-comparison + #about { /* Actualizado para la nueva sección */
+    border-top: 1px solid var(--akatsuki-dark-gray);
+}
+/* Aseguramos borde entre FAQ y Referrals */
+#faq + #referrals {
+    border-top: 1px solid var(--akatsuki-dark-gray);
+}
+
+
+/* Contenido general de la sección */
 .section .section-content {
   position: relative;
   z-index: 1;
-  max-width: 800px; /* Reducido para centrar más el título */
+  max-width: 800px; /* Ancho base para contenido centrado */
   margin-left: auto;
   margin-right: auto;
 }
-.section h2 {
+.section h2 { /* Estilo base para títulos h2 dentro de .section */
   font-family: var(--font-primary);
   font-size: 3rem;
   margin-bottom: 30px;
@@ -302,9 +370,10 @@ header {
   letter-spacing: 1px;
   color: var(--akatsuki-white);
   position: relative;
-  display: inline-block;
+  display: inline-block; /* Para centrar la línea */
   padding-bottom: 10px;
 }
+/* Línea roja debajo de títulos h2 generales (se puede anular específicamente) */
 .section h2::after {
   content: '';
   position: absolute;
@@ -315,12 +384,12 @@ header {
   height: 3px;
   background-color: var(--akatsuki-red);
 }
-.section p {
+.section p { /* Estilo base para párrafos dentro de .section */
   font-size: 1.1rem;
   margin: 0 auto 30px auto;
   line-height: 1.7;
   color: var(--akatsuki-light-gray);
-  max-width: 800px; /* Para que coincida con el section-content */
+  max-width: 800px; /* Ancho máximo para párrafos */
 }
 
 /* --- Fondo de Estrellas --- */
@@ -362,8 +431,9 @@ header {
 
 /* --- Membership Packs (#new-section) --- */
 #new-section {
-  overflow: hidden;
   background-color: var(--akatsuki-dark-bg);
+  padding: 100px 40px; /* Asegurar padding estándar */
+  /* overflow: visible; <= Ya está en .section */
 }
 .packs-container {
   display: flex;
@@ -396,16 +466,7 @@ header {
 }
 .pack-card:hover {
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
-  transform: scale(1.05) rotate(3deg);
-}
-.packs-container > *:nth-child(3n+1):hover {
-  transform: scale(1.05) rotate(-3deg);
-}
-.packs-container > *:nth-child(3n+3):hover {
-  transform: scale(1.05) rotate(3deg);
-}
-.packs-container > *:nth-child(3n+2):hover {
-  transform: scale(1.05) rotate(0deg);
+  transform: translateY(-10px) scale(1.03); /* Efecto hover levantado */
 }
 .tag.popular-tag {
   position: absolute;
@@ -515,7 +576,7 @@ header {
   text-transform: uppercase;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  margin-top: auto;
+  margin-top: auto; /* Empuja el botón hacia abajo */
 }
 .cta-button:hover {
   background-color: #A00000;
@@ -524,7 +585,7 @@ header {
 .payment-note {
   font-size: 0.95rem;
   color: var(--akatsuki-light-gray);
-  margin-top: -10px;
+  margin-top: -10px; /* Un poco más arriba */
   margin-bottom: 40px;
   font-style: italic;
   max-width: 800px;
@@ -534,17 +595,361 @@ header {
   z-index: 1;
 }
 
-/* --- Sección #about --- */
-#about {
-  background-color: var(--akatsuki-black) !important;
+/* --- ================== ESTILOS SECCIÓN FUSIONADA CHOICE & COMPARISON ================== --- */
+#choice-comparison {
+  background-color: var(--akatsuki-black); /* Fondo negro base */
+  padding: 100px 40px 80px 40px; /* Padding arriba/abajo ajustado */
+  /* border-top gestionado por reglas de adyacencia */
+  overflow: hidden; /* Necesario para contener animaciones */
+}
+
+.choice-comparison-wrapper {
+  max-width: 1100px; /* Ancho máximo similar al comparison-container */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra los elementos hijos */
+  gap: 50px; /* Espacio entre título, comparación y video */
+}
+
+/* Estilos para el título y subtítulo dentro de la nueva sección */
+#choice-comparison .choice-title {
+  font-family: var(--font-primary);
+  font-size: 3rem;
+  margin-bottom: 10px; /* Menos espacio antes del subtítulo */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--akatsuki-white);
   position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+#choice-comparison .choice-title::after { /* Línea roja */
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background-color: var(--akatsuki-red);
+}
+#choice-comparison .choice-subtitle {
+  font-size: 1.1rem;
+  color: var(--akatsuki-light-gray);
+  margin: 0 auto 30px auto; /* Margen inferior añadido */
+  max-width: 600px;
+  line-height: 1.7; /* Asegurar altura de línea estándar */
+}
+
+/* Ajustes al contenedor de comparación existente */
+#choice-comparison .comparison-container {
+  display: flex; /* Asegura que sea flex */
+  max-width: 100%; /* Ocupa el ancho del wrapper */
+  /* Hereda estilos base de .comparison-container como bg, border, etc. */
+  background-color: var(--akatsuki-dark-bg);
+  border: 1px solid var(--akatsuki-dark-gray);
+  border-radius: 8px;
   overflow: hidden;
-  padding: 140px 40px;
-  min-height: 80vh;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  width: 100%; /* Asegura que ocupe el ancho */
+  margin-top: 0;
+  margin-bottom: 0; /* Margen controlado por el gap del wrapper */
+}
+#choice-comparison .comparison-column {
+  flex: 1;
+  padding: 40px 35px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+#choice-comparison .column-active {
+  background-color: rgba(204, 0, 0, 0.07);
+  border-left: 1px solid #555;
+}
+#choice-comparison .column-passive {
+   background-color: transparent;
+}
+#choice-comparison .comparison-tagline {
+  font-size: 0.9rem;
+  color: var(--akatsuki-light-gray);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+#choice-comparison .column-active .comparison-tagline {
+    color: var(--akatsuki-red);
+}
+#choice-comparison .comparison-title {
+  font-family: var(--font-primary);
+  font-size: 2.2rem;
+  color: var(--akatsuki-white);
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+#choice-comparison .comparison-subline {
+  font-size: 1.1rem;
+  color: var(--akatsuki-light-gray);
+  margin-bottom: 30px;
+  font-style: italic;
+  min-height: 40px;
+}
+#choice-comparison .comparison-price {
+  margin-bottom: 35px;
+  min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: auto !important; /* Asegura visibilidad del fondo de estrellas */
+  gap: 12px;
+  flex-wrap: wrap;
+}
+#choice-comparison .comparison-price .original-price s {
+  color: var(--akatsuki-light-gray);
+  font-size: 1.5rem;
+  text-decoration-color: var(--akatsuki-red);
+  display: inline-block;
+  margin-bottom: 5px;
+}
+#choice-comparison .comparison-price .arrow {
+  color: var(--akatsuki-white);
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+#choice-comparison .comparison-price .discounted-price {
+  color: var(--akatsuki-red);
+  font-size: 2.4rem;
+  font-weight: bold;
+  font-family: var(--font-primary);
+  animation: floatSmooth 3.5s ease-in-out infinite;
+  display: inline-block;
+  will-change: transform;
+}
+#choice-comparison .comparison-price .price-tag {
+  font-size: 0.9rem;
+  color: var(--akatsuki-light-gray);
+  font-weight: normal;
+  margin-left: 5px;
+  align-self: flex-end;
+  padding-bottom: 5px;
+}
+#choice-comparison .comparison-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 35px auto;
+  text-align: left;
+  max-width: 350px;
+  flex-grow: 1;
+}
+#choice-comparison .comparison-list li {
+  margin-bottom: 12px;
+  font-size: 1rem;
+  color: var(--akatsuki-light-gray);
+  padding-left: 25px;
+  position: relative;
+}
+#choice-comparison .comparison-list.list-positive li::before {
+  content: '✓';
+  color: var(--akatsuki-red);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+#choice-comparison .comparison-list.list-negative li::before {
+  content: '✗';
+  color: var(--akatsuki-light-gray);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+#choice-comparison .comparison-cta {
+  padding: 12px 30px;
+  text-decoration: none;
+  font-family: var(--font-primary);
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+  width: 80%;
+  max-width: 280px;
+  margin-top: auto; /* Empuja al final de la columna flex */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  letter-spacing: 0.5px;
+}
+#choice-comparison .comparison-cta:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+#choice-comparison .comparison-cta.cta-active {
+  background-color: var(--akatsuki-red);
+  color: var(--akatsuki-white);
+  border-color: var(--akatsuki-red);
+}
+#choice-comparison .comparison-cta.cta-active:hover {
+  background-color: #A00000;
+  border-color: #A00000;
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(204, 0, 0, 0.3);
+}
+#choice-comparison .comparison-cta.cta-passive {
+  background-color: transparent;
+  color: var(--akatsuki-light-gray);
+  border-color: var(--akatsuki-dark-gray);
+}
+#choice-comparison .comparison-cta.cta-passive:hover {
+  background-color: var(--akatsuki-dark-gray);
+  color: var(--akatsuki-white);
+  border-color: var(--akatsuki-dark-gray);
+  transform: scale(1.03);
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+}
+
+/* Ajustes al contenedor del video */
+#choice-comparison .video-frame-container {
+  max-width: 800px; /* Ancho máximo del video */
+  width: 100%;
+  margin: 0 auto; /* Centrado, margen vertical controlado por el gap del wrapper */
+  position: relative; /* Para posible pseudo-elemento glow si se necesitara */
+}
+#choice-comparison .video-player {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 2px solid var(--akatsuki-red);
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(204, 0, 0, 0); /* Sombra base para animación */
+}
+#choice-comparison .neon-glow {
+  animation: neon-glow-pulse 2.5s infinite alternate ease-in-out;
+}
+@keyframes neon-glow-pulse {
+  0% {
+    box-shadow:
+      0 0 3px var(--akatsuki-red),
+      0 0 6px var(--akatsuki-red),
+      0 0 9px rgba(204, 0, 0, 0.3);
+  }
+  100% {
+    box-shadow:
+      0 0 6px var(--akatsuki-red),
+      0 0 12px var(--akatsuki-red),
+      0 0 18px rgba(204, 0, 0, 0.5);
+  }
+}
+
+/* --- Animaciones Direccionales para Choice/Comparison --- */
+.animated-component {
+  opacity: 0;
+  transition: opacity var(--choice-anim-duration) var(--choice-anim-timing),
+              transform var(--choice-anim-duration) var(--choice-anim-timing);
+  transition-delay: var(--choice-anim-delay); /* Delay base */
+  will-change: opacity, transform;
+}
+
+/* Estados iniciales basados en la dirección */
+.animated-component[data-animation-direction="down"] {
+  transform: translateY(calc(-1 * var(--choice-anim-distance-y)));
+}
+.animated-component[data-animation-direction="up"] {
+  transform: translateY(var(--choice-anim-distance-y));
+}
+.animated-component[data-animation-direction="left"] {
+  transform: translateX(calc(-1 * var(--choice-anim-distance-x)));
+}
+.animated-component[data-animation-direction="right"] {
+  transform: translateX(var(--choice-anim-distance-x));
+}
+/* Para fade-in, solo se necesita la opacidad inicial */
+
+/* Estado visible */
+.animated-component.in-view {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* Staggering Delays (Ajustados ligeramente) */
+/* Aplicamos delays directamente en los elementos específicos dentro de #choice-comparison */
+#choice-comparison .choice-title { transition-delay: 0.1s; }
+#choice-comparison .choice-subtitle { transition-delay: 0.15s; }
+#choice-comparison .comparison-column.column-passive { transition-delay: 0.25s; }
+#choice-comparison .comparison-column.column-active { transition-delay: 0.25s; }
+#choice-comparison .video-frame-container { transition-delay: 0.4s; }
+
+
+/* --- Responsividad para Choice/Comparison (Ajustes) --- */
+@media (max-width: 768px) {
+  #choice-comparison {
+    padding: 80px 20px 60px 20px;
+  }
+  #choice-comparison .choice-title {
+    font-size: 2.5rem;
+  }
+  #choice-comparison .choice-subtitle {
+      font-size: 1rem;
+  }
+  #choice-comparison .comparison-container {
+    flex-direction: column; /* Aseguramos que se apilen */
+    border: 1px solid var(--akatsuki-dark-gray); /* Mantiene borde en móvil */
+    border-radius: 8px;
+    background-color: var(--akatsuki-dark-bg);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    overflow: hidden; /* Para el border-radius */
+  }
+   #choice-comparison .column-active {
+       border-left: none;
+       border-top: 1px solid #555; /* Separador en móvil */
+   }
+   #choice-comparison .comparison-column {
+       padding: 30px 25px;
+   }
+  #choice-comparison .comparison-title { font-size: 1.8rem; }
+  #choice-comparison .comparison-subline { font-size: 1rem; min-height: auto; margin-bottom: 25px; }
+  #choice-comparison .comparison-price { min-height: auto; margin-bottom: 25px; gap: 8px; }
+  #choice-comparison .comparison-price .original-price s { font-size: 1.3rem; }
+  #choice-comparison .comparison-price .arrow { font-size: 1.5rem; }
+  #choice-comparison .comparison-price .discounted-price { font-size: 2rem; animation: none; } /* Desactivar float en móvil */
+  #choice-comparison .comparison-price .price-tag { font-size: 0.8rem; }
+  #choice-comparison .comparison-list { max-width: 100%; margin-bottom: 30px; }
+  #choice-comparison .comparison-list li { font-size: 0.9rem; padding-left: 20px; }
+  #choice-comparison .comparison-cta { width: 90%; }
+
+   #choice-comparison .video-frame-container {
+    max-width: 95%;
+  }
+  /* Ajustar distancia de animación para móviles */
+  :root {
+      --choice-anim-distance-y: 30px;
+      --choice-anim-distance-x: 40px;
+  }
+}
+@media (max-width: 480px) {
+  #choice-comparison .choice-title {
+    font-size: 2.2rem;
+  }
+   #choice-comparison .comparison-title { font-size: 1.6rem; }
+   #choice-comparison .comparison-price .discounted-price { font-size: 1.8rem; }
+}
+/* --- ================== FIN ESTILOS CHOICE & COMPARISON ================== --- */
+
+
+/* --- Sección #about --- */
+#about {
+  background-color: var(--akatsuki-black) !important; /* Mantener fondo negro */
+  position: relative;
+  overflow: hidden;
+  padding: 140px 40px;
+  min-height: 80vh; /* Ajustar si es necesario */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border-top gestionado por reglas de adyacencia */
 }
 #about .section-content {
   position: relative;
@@ -552,14 +957,15 @@ header {
   max-width: 900px;
   text-align: center;
 }
-#about h2 {
+#about h2 { /* Título específico de About */
   font-size: clamp(2.8rem, 6vw, 4.5rem);
   margin-bottom: 40px;
-  color: var(--akatsuki-red);
+  color: var(--akatsuki-red); /* Rojo para About */
   text-shadow: 0 0 6px rgba(204, 0, 0, 0.5);
-  display: block;
+  display: block; /* Ocupa todo el ancho */
+  line-height: 1.2;
 }
-#about h2::after {
+#about h2::after { /* Sin línea roja para About */
   display: none;
 }
 #about p {
@@ -574,15 +980,15 @@ header {
 
 /* --- Sección Focus & Guidance (#focus-guidance) --- */
 .focus-guidance-section {
-  padding: 0;
+  padding: 0; /* Sin padding vertical */
   border-top: 1px solid var(--akatsuki-dark-gray);
   background-color: var(--akatsuki-dark-bg);
   overflow: hidden;
 }
 .focus-guidance-container {
   display: flex;
-  min-height: 70vh;
-  align-items: stretch;
+  min-height: 70vh; /* Altura mínima */
+  align-items: stretch; /* Estirar elementos a la altura del contenedor */
 }
 .focus-guidance-image {
   flex-basis: 50%;
@@ -594,7 +1000,7 @@ header {
 }
 .focus-guidance-text {
   flex-basis: 50%;
-  background-color: var(--akatsuki-dark-gray);
+  background-color: var(--akatsuki-dark-gray); /* Fondo gris oscuro para el texto */
   padding: 60px 50px;
   display: flex;
   flex-direction: column;
@@ -616,25 +1022,30 @@ header {
   margin-bottom: 25px;
   line-height: 1.3;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  display: block; /* Asegurar que ocupe su línea */
+  padding-bottom: 0; /* Sin padding inferior */
 }
-.focus-guidance-text h2::after {
+.focus-guidance-text h2::after { /* Sin línea roja */
     display: none;
 }
 .focus-guidance-text p {
   font-size: 1.05rem;
   line-height: 1.7;
   margin-bottom: 20px;
-  max-width: 550px;
+  max-width: 550px; /* Limitar ancho del párrafo */
 }
 .focus-guidance-text .focus-cta {
-  margin-top: 20px;
-  align-self: flex-start;
-  padding: 12px 35px;
+  margin-top: 20px; /* Espacio sobre el botón */
+  align-self: flex-start; /* Alinear a la izquierda */
+  padding: 12px 35px; /* Padding del botón */
+  /* Hereda estilos de .cta-button */
 }
 
 /* --- ================== NUEVA SECCIÓN TEAM (#team) ================== --- */
 #team {
   background-color: var(--akatsuki-dark-bg); /* Fondo oscuro para la sección */
+  padding: 100px 40px; /* Padding estándar */
+  border-top: 1px solid var(--akatsuki-dark-gray); /* Asegurar borde superior */
 }
 .team-container {
   display: flex;
@@ -656,6 +1067,7 @@ header {
   width: 100%; /* Ocupa el ancho del .team-container */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
   overflow: hidden; /* Para contener la imagen */
+  /* La animación se define abajo */
 }
 .team-member-image {
   flex: 0 0 180px; /* Ancho fijo para la imagen */
@@ -699,7 +1111,8 @@ header {
   margin-bottom: 0; /* Quita margen inferior del último párrafo */
 }
 
-/* -- Animación Scroll para Team Cards -- */
+/* -- Animación Scroll para Team Cards (Efecto Blur/Scale/Translate) -- */
+/* Usaremos .animate-on-scroll para la detección genérica en JS, pero estilos específicos aquí */
 .team-member-card.animate-on-scroll {
   opacity: 0;
   filter: blur(var(--team-animation-blur));
@@ -707,12 +1120,12 @@ header {
               transform var(--team-animation-duration) var(--team-animation-timing),
               filter var(--team-animation-duration) var(--team-animation-timing);
   will-change: opacity, transform, filter;
+  /* El transform inicial se aplica basado en data-attribute */
+  transform: scaleX(var(--team-animation-scaleX)); /* Aplicamos scaleX base */
 }
-/* Estado inicial - Mover a la izquierda */
 .team-member-card.animate-on-scroll[data-animation-direction="left"] {
   transform: translateX(calc(-1 * var(--team-animation-distance))) scaleX(var(--team-animation-scaleX));
 }
-/* Estado inicial - Mover a la derecha */
 .team-member-card.animate-on-scroll[data-animation-direction="right"] {
   transform: translateX(var(--team-animation-distance)) scaleX(var(--team-animation-scaleX));
 }
@@ -724,10 +1137,60 @@ header {
 }
 /* --- FIN ESTILOS TEAM --- */
 
+/* --- Sección Proof (#proof-section) --- */
+#proof-section {
+    background-color: var(--akatsuki-dark-bg);
+    padding: 100px 40px;
+    text-align: center;
+    border-top: 1px solid var(--akatsuki-dark-gray);
+}
+#proof-section .section-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+#proof-section h2 {
+    font-family: var(--font-primary);
+    font-size: 3rem;
+    color: var(--akatsuki-white);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    /* Hereda línea roja de .section h2 */
+}
+#proof-section p {
+    font-size: 1.1rem;
+    color: var(--akatsuki-light-gray);
+    line-height: 1.7;
+    margin-bottom: 40px; /* Más espacio antes de la imagen */
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.proof-image-container {
+    margin-bottom: 40px; /* Espacio después de la imagen */
+    max-width: 100%; /* Asegura que no se desborde */
+    text-align: center; /* Centra la imagen si es más pequeña que el contenedor */
+}
+.proof-image-container img {
+    max-width: 100%; /* Hace la imagen responsiva */
+    height: auto;
+    border: 1px solid var(--akatsuki-dark-gray);
+    border-radius: 5px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.proof-cta {
+    /* Hereda estilo de .cta-button, ajustamos margen */
+     margin-top: 30px;
+     display: inline-block; /* Para que no ocupe todo el ancho */
+     width: auto; /* Ancho automático */
+     padding-left: 40px; /* Más padding horizontal */
+     padding-right: 40px;
+}
 
-/* --- Sección Contacto (#contact) --- */
+/* --- Sección Contacto (#contact) --- ANULADA / REEMPLAZADA POR REFERRALS ---
 #contact {
   background: var(--akatsuki-dark-bg);
+  padding: 100px 40px;
+  border-top: 1px solid var(--akatsuki-dark-gray);
 }
 #contact .section-content h2 {
   color: var(--akatsuki-white);
@@ -735,6 +1198,268 @@ header {
 #contact .section-content p {
   color: var(--akatsuki-light-gray);
 }
+*/
+
+/* --- ================== NUEVA SECCIÓN FAQ (#faq) ================== --- */
+#faq {
+    background-color: var(--akatsuki-black); /* Fondo oscuro consistente */
+    padding: 100px 40px;
+    border-top: 1px solid var(--akatsuki-dark-gray);
+    position: relative;
+    overflow: hidden; /* Para bordes redondeados del contenedor */
+}
+
+#faq .section-content {
+    max-width: 850px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 1;
+}
+
+#faq h2 { /* Título "Frequently Asked Questions" */
+    font-family: var(--font-primary);
+    font-size: 2.8rem; /* Un poco más pequeño */
+    margin-bottom: 40px; /* Espacio antes de las preguntas */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--akatsuki-white);
+    text-align: center;
+    position: relative;
+    display: block; /* Ocupa todo el ancho */
+    padding-bottom: 0; /* Sin padding inferior */
+}
+#faq h2::after { /* Sin línea roja para FAQ */
+    display: none;
+}
+
+.faq-container {
+    width: 100%;
+    border: 1px solid #333; /* Borde exterior sutil para el contenedor */
+    border-radius: 8px; /* Bordes redondeados para el contenedor */
+    overflow: hidden; /* Asegura que los items internos respeten el borde redondeado */
+}
+
+.faq-item {
+    background-color: transparent;
+    border: none; /* Sin borde individual */
+    border-bottom: 1px solid #333; /* Línea divisoria sutil entre preguntas */
+    margin-bottom: 0; /* Sin margen inferior, usa el borde */
+    overflow: hidden; /* Para transición de altura */
+}
+.faq-item:last-child {
+    border-bottom: none; /* Quita el borde del último elemento */
+}
+
+.faq-question {
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    padding: 18px 25px; /* Padding */
+    text-align: left;
+    font-family: var(--font-secondary);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--akatsuki-light-gray);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+.faq-question:hover {
+    background-color: rgba(255, 255, 255, 0.03); /* Hover muy sutil */
+}
+
+.faq-item.active .faq-question {
+     color: var(--akatsuki-white); /* Cambia color de la pregunta al abrir */
+}
+
+/* Indicador de Chevron */
+.faq-indicator {
+    width: 12px;
+    height: 12px;
+    border-style: solid;
+    border-color: var(--akatsuki-light-gray);
+    border-width: 0 2px 2px 0; /* Forma > */
+    display: inline-block;
+    transform: rotate(45deg); /* Apunta abajo */
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    margin-left: 15px;
+    flex-shrink: 0;
+}
+
+.faq-item.active .faq-indicator {
+    transform: rotate(-135deg); /* Apunta arriba */
+    border-color: var(--akatsuki-white);
+}
+
+.faq-answer {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0 25px; /* Padding horizontal */
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--akatsuki-light-gray);
+    background-color: rgba(0,0,0, 0.1);
+    transition: max-height 0.4s ease-out,
+                opacity 0.3s ease-in-out 0.1s, /* Delay en opacity */
+                padding-top 0.4s ease-out,
+                padding-bottom 0.4s ease-out;
+    will-change: max-height, opacity, padding;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 400px; /* Ajustar si es necesario */
+    opacity: 1;
+    padding-top: 15px;
+    padding-bottom: 20px;
+    transition-delay: 0s; /* Reset delay al abrir */
+}
+/* --- Fin Estilos FAQ --- */
+
+/* --- ================== NUEVA SECCIÓN REFERRALS (#referrals) ================== --- */
+#referrals {
+  background-color: var(--akatsuki-dark-bg); /* Fondo oscuro */
+  /* padding y border-top heredados de .section */
+}
+
+#referrals .section-content {
+  max-width: 750px; /* Ancho ligeramente menor para centrar más el generador */
+}
+
+#referrals h2 {
+  /* Hereda estilos de .section h2, quizá sin línea roja */
+   color: var(--akatsuki-white);
+}
+
+#referrals .section-content > p { /* Párrafo introductorio */
+  color: var(--akatsuki-light-gray);
+  margin-bottom: 40px; /* Más espacio antes del generador */
+}
+
+.referral-generator-container {
+  background-color: var(--akatsuki-dark-gray);
+  padding: 35px 30px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  max-width: 600px; /* Ancho máximo del contenedor del generador */
+  margin: 0 auto 40px auto; /* Centrado y con margen inferior */
+  text-align: left;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.referral-label {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--akatsuki-light-gray);
+  margin-bottom: 10px;
+}
+
+.referral-input {
+  display: block;
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 1rem;
+  color: var(--akatsuki-light-gray);
+  background-color: #222;
+  border: 1px solid #444;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.referral-input::placeholder {
+  color: #666;
+}
+
+.referral-input:focus {
+  outline: none;
+  border-color: var(--akatsuki-red);
+  box-shadow: 0 0 8px rgba(204, 0, 0, 0.3);
+}
+
+.referral-button {
+  /* Hereda de .cta-button (fondo rojo, etc) */
+  width: 100%; /* Ocupa todo el ancho del contenedor */
+  margin-top: 0; /* Reset margin-top de cta-button si no se quiere */
+  padding: 12px 20px; /* Ajustar padding si es necesario */
+}
+/* Estado de carga/desactivado para el botón (controlado por JS) */
+.referral-button:disabled {
+    background-color: var(--akatsuki-dark-gray);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.referral-output-area {
+  margin-top: 25px;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px dashed #444;
+  border-radius: 5px;
+  min-height: 60px; /* Para que tenga altura incluso vacío */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  word-wrap: break-word; /* Para romper enlaces largos */
+  transition: background-color 0.3s ease;
+}
+
+.referral-output-area p {
+  margin: 0; /* Resetear margen del párrafo interno */
+  font-size: 0.9rem;
+  color: var(--akatsuki-light-gray);
+}
+/* Estilo para el enlace generado */
+.referral-output-area a {
+    color: var(--akatsuki-red);
+    font-weight: bold;
+    text-decoration: none;
+    word-break: break-all; /* Asegura que el enlace se rompa si es muy largo */
+}
+.referral-output-area a:hover {
+    text-decoration: underline;
+}
+/* Estilos para mensajes de estado (añadir/quitar clases con JS) */
+.referral-output-area.loading p {
+    /* Podrías añadir un spinner aquí o simplemente texto */
+    font-style: italic;
+    color: var(--akatsuki-light-gray);
+}
+.referral-output-area.error p {
+    color: var(--akatsuki-red);
+    font-weight: bold;
+}
+.referral-output-area.success {
+    border-color: var(--akatsuki-red);
+    background-color: rgba(204, 0, 0, 0.1);
+}
+.referral-output-area.success p {
+    color: var(--akatsuki-white);
+}
+
+
+.referral-info {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.referral-info p {
+  font-size: 0.9rem;
+  color: var(--footer-text-color);
+  font-style: italic;
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+/* --- Fin Estilos Referrals --- */
+
 
 /* --- FOOTER --- */
 footer {
@@ -764,6 +1489,8 @@ footer p {
 
 /* --- RESPONSIVE DESIGN --- */
 @media (max-width: 992px) {
+  /* Packs */
+  #new-section { padding: 80px 20px; }
   .packs-container {
     flex-direction: column;
     align-items: center;
@@ -774,9 +1501,8 @@ footer p {
     width: 90%;
     min-width: unset;
   }
-  .pack-card:hover,
-  .packs-container > *:nth-child(n):hover {
-    transform: scale(1.03);
+  .pack-card:hover {
+     transform: translateY(-5px) scale(1.02); /* Efecto hover más sutil */
   }
   .tag.popular-tag {
     top: 15px;
@@ -786,19 +1512,19 @@ footer p {
     padding: 5px 0;
   }
 
-  /* Responsividad para Focus & Guidance */
+  /* Focus & Guidance */
   .focus-guidance-container {
     flex-direction: column;
   }
   .focus-guidance-image {
-    flex-basis: auto;
+    flex-basis: auto; /* Reset base */
     min-height: 350px;
-    order: 1;
+    order: 1; /* Imagen primero */
   }
   .focus-guidance-text {
-    flex-basis: auto;
+    flex-basis: auto; /* Reset base */
     padding: 40px 30px;
-    order: 2;
+    order: 2; /* Texto después */
     text-align: center;
   }
   .focus-guidance-text h2 {
@@ -811,13 +1537,13 @@ footer p {
      margin-right: auto;
   }
   .focus-guidance-text .focus-cta {
-    align-self: center;
+    align-self: center; /* Centrar botón */
   }
 
-  /* Responsividad para Team Section */
+  /* Team Section */
   .team-container {
     gap: 40px;
-    max-width: 90%; /* Ocupa más ancho en tablet */
+    max-width: 90%;
   }
   .team-member-card {
     padding: 25px;
@@ -827,27 +1553,16 @@ footer p {
     height: 150px;
     margin-right: 25px;
   }
-  .team-member-info h3 {
-    font-size: 1.6rem;
-  }
-  .team-member-info h4 {
-    font-size: 0.9rem;
-  }
-  .team-member-info p {
-    font-size: 0.9rem;
-  }
+  .team-member-info h3 { font-size: 1.6rem; }
+  .team-member-info h4 { font-size: 0.9rem; }
+  .team-member-info p { font-size: 0.9rem; }
 }
 
 @media (max-width: 768px) {
-  header {
-    padding: 0 20px;
-  }
-  .logo {
-    font-size: 1.6rem;
-  }
-  .menu-toggle {
-    display: block;
-  }
+  /* Header */
+  header { padding: 0 20px; }
+  .logo { font-size: 1.6rem; }
+  .menu-toggle { display: block; }
   .main-nav {
     position: fixed;
     top: 0;
@@ -862,9 +1577,7 @@ footer p {
     z-index: 1050;
     border-left: 1px solid var(--akatsuki-dark-gray);
   }
-  .main-nav.is-active {
-    transform: translateX(0);
-  }
+  .main-nav.is-active { transform: translateX(0); }
   .main-nav ul {
     flex-direction: column;
     align-items: center;
@@ -878,175 +1591,362 @@ footer p {
     font-size: 1.3rem;
     color: var(--akatsuki-white);
   }
-  .main-nav ul li a.active {
-    border-bottom-color: transparent;
+   .main-nav ul li a.active {
+    border-bottom-color: transparent; /* Quitar borde en menú móvil */
     color: var(--akatsuki-red);
   }
-  .hero-content h1 {
-    font-size: clamp(2.8rem, 12vw, 4rem);
+
+  /* Hero */
+  .hero-content h1 { font-size: clamp(2.8rem, 12vw, 4rem); }
+  .hero-content h1 span { margin: 0; }
+  .hero-content p { font-size: clamp(1rem, 3vw, 1.1rem); }
+  .hero-content a.cta { padding: 12px 30px; }
+
+  /* General Section */
+  .section { padding: 80px 20px; }
+  .section h2 { font-size: 2.5rem; }
+  .section h2::after { width: 50px; height: 2px; }
+  .section p { font-size: 1rem; }
+
+  /* Packs */
+  .pack-card { padding: 25px 20px; }
+  .pack-card h3 { font-size: 1.6rem; }
+  .pack-card .price { font-size: 1.4rem; }
+  .features-list li { font-size: 0.9rem; }
+  .cta-button { font-size: 0.9rem; padding: 10px 15px; }
+  .tag.popular-tag { top: 12px; right: -45px; width: 110px; font-size: 0.7rem; padding: 4px 0; }
+  .payment-note { font-size: 0.85rem; margin-bottom: 30px; }
+
+  /* Choice & Comparison (Fusionada - Responsivo Tablet/Móvil) */
+  #choice-comparison { padding: 80px 20px 60px 20px; } /* Ajuste padding móvil */
+  #choice-comparison .choice-comparison-wrapper { gap: 40px; } /* Menos espacio en móvil */
+  #choice-comparison .choice-title { font-size: 2.5rem; }
+  #choice-comparison .choice-subtitle { font-size: 1rem; }
+  #choice-comparison .comparison-container {
+      flex-direction: column; /* Apilar columnas */
+      border: 1px solid var(--akatsuki-dark-gray);
+      border-radius: 8px;
+      background-color: var(--akatsuki-dark-bg);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
   }
-  .hero-content h1 span {
-    margin: 0;
-  }
-  .hero-content p {
-    font-size: clamp(1rem, 3vw, 1.1rem);
-  }
-  .hero-content a.cta {
-    padding: 12px 30px;
-  }
-  .section {
-    padding: 80px 20px;
-  }
-  .section h2 {
-    font-size: 2.5rem;
-  }
-  .section h2::after {
-    width: 50px;
-    height: 2px;
-  }
-  .section p {
-    font-size: 1rem;
-  }
-  .pack-card {
-    padding: 25px 20px;
-  }
-  .pack-card h3 {
-    font-size: 1.6rem;
-  }
-  .pack-card .price {
-    font-size: 1.4rem;
-  }
-  .features-list li {
-    font-size: 0.9rem;
-  }
-  .cta-button {
-    font-size: 0.9rem;
-    padding: 10px 15px;
-  }
-  .tag.popular-tag {
-    top: 12px;
-    right: -45px;
-    width: 110px;
-    font-size: 0.7rem;
-    padding: 4px 0;
-  }
-  .payment-note {
-    font-size: 0.85rem;
-    margin-bottom: 30px;
-  }
-  /* Ajustes responsivos para #about */
-  #about {
-    padding: 100px 20px;
-    min-height: 60vh;
-  }
-  #about h2 {
-    font-size: clamp(2.2rem, 8vw, 3rem);
-    margin-bottom: 30px;
-  }
-  #about p {
-    font-size: clamp(1rem, 3.5vw, 1.1rem);
-  }
-  /* Responsividad para Focus & Guidance (móvil pequeño) */
-   .focus-guidance-image {
-       min-height: 300px;
+   #choice-comparison .column-active {
+       border-left: none;
+       border-top: 1px solid #555; /* Separador */
    }
-    .focus-guidance-text {
-        padding: 35px 25px;
+   #choice-comparison .comparison-column {
+       padding: 30px 25px; /* Menos padding interno */
+   }
+  #choice-comparison .comparison-title { font-size: 1.8rem; }
+  #choice-comparison .comparison-subline
+  #choice-comparison .comparison-subline { font-size: 1rem; min-height: auto; margin-bottom: 25px; }
+      #choice-comparison .comparison-price { min-height: auto; margin-bottom: 25px; gap: 8px; }
+      #choice-comparison .comparison-price .original-price s { font-size: 1.3rem; }
+      #choice-comparison .comparison-price .arrow { font-size: 1.5rem; }
+      #choice-comparison .comparison-price .discounted-price { font-size: 2rem; animation: none; } /* No flotar */
+      #choice-comparison .comparison-price .price-tag { font-size: 0.8rem; }
+      #choice-comparison .comparison-list { max-width: 100%; margin-bottom: 30px; }
+      #choice-comparison .comparison-list li { font-size: 0.9rem; padding-left: 20px; }
+      #choice-comparison .comparison-cta { width: 90%; }
+      #choice-comparison .video-frame-container { max-width: 95%; }
+      /* Ajustar distancia de animación para móviles */
+      :root {
+          --choice-anim-distance-y: 30px;
+          --choice-anim-distance-x: 40px;
+          /* Team anim */
+          --team-animation-distance: 60px;
+          --team-animation-blur: 5px;
+      }
+
+
+      /* About */
+      #about { padding: 100px 20px; min-height: 60vh; }
+      #about h2 { font-size: clamp(2.2rem, 8vw, 3rem); margin-bottom: 30px; }
+      #about p { font-size: clamp(1rem, 3.5vw, 1.1rem); }
+
+      /* Focus & Guidance (móvil) */
+       .focus-guidance-image { min-height: 300px; }
+       .focus-guidance-text { padding: 35px 25px; }
+
+      /* Team Section (móvil) */
+      .team-container { max-width: 100%; gap: 30px; }
+      .team-member-card { flex-direction: column; text-align: center; padding: 20px; }
+      .team-member-image { flex: 0 0 120px; height: 120px; margin-right: 0; margin-bottom: 20px; }
+      .team-member-info { text-align: center; }
+      .team-member-info h3 { font-size: 1.5rem; }
+      .team-member-info h4 { font-size: 0.85rem; }
+      .team-member-info p { font-size: 0.85rem; }
+
+
+      /* FAQ */
+      #faq { padding: 80px 20px; }
+      #faq h2 { font-size: 2.3rem; }
+      .faq-question { padding: 16px 20px; font-size: 0.95rem; }
+      .faq-indicator { width: 10px; height: 10px; }
+      .faq-answer { padding: 0 20px; font-size: 0.9rem; }
+       .faq-item.active .faq-answer { padding-top: 12px; padding-bottom: 18px; }
+    } /* Fin @media (max-width: 768px) */
+
+    @media (max-width: 480px) {
+      /* Choice/Comparison (móvil pequeño) */
+       #choice-comparison .choice-title { font-size: 2.2rem; }
+       #choice-comparison .comparison-title { font-size: 1.6rem; }
+       #choice-comparison .comparison-price .discounted-price { font-size: 1.8rem; }
+
+      /* FAQ (móvil pequeño) */
+       #faq h2 { font-size: 2rem; }
+       .faq-question { padding: 14px 15px; font-size: 0.9rem; }
+       .faq-indicator { width: 9px; height: 9px; border-width: 0 1.5px 1.5px 0; }
+       .faq-answer { font-size: 0.85rem; padding: 0 15px; }
+
+       /* Referrals Section (móvil pequeño) */
+       .referral-input { font-size: 0.9rem; }
+       .referral-button { padding: 10px 20px; font-size: 0.9rem;}
+       .referral-output-area { font-size: 0.9rem; padding: 12px; }
+
+    } /* Fin @media (max-width: 480px) */
+
+
+    /* --- Animaciones Base --- */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-  /* Responsividad para Team Section (móvil) */
-  .team-container {
-      max-width: 100%; /* Ocupa todo el ancho disponible */
-      gap: 30px;
-  }
-  .team-member-card {
-      flex-direction: column; /* Apila imagen y texto */
+    /* Dollar Rain */
+    .dollar-sign {
+      position: fixed;
+      top: -50px;
+      font-size: 1.8rem;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      user-select: none;
+      pointer-events: none;
+      z-index: 990;
+      animation-name: fall;
+      animation-timing-function: linear;
+      animation-iteration-count: 1; /* Solo una vez */
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    @keyframes fall {
+      0% { transform: translateY(0vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* Animación Flotante para Precio */
+    @keyframes floatSmooth {
+      0%, 100% {
+        transform: translateY(0);
+        text-shadow: 0 0 8px rgba(204, 0, 0, 0.6);
+      }
+      50% {
+        transform: translateY(-6px);
+        text-shadow: 0 4px 15px rgba(204, 0, 0, 0.8);
+      }
+    }
+
+    /* --- Animaciones de Scroll (Generales - Comentadas/Anuladas) --- */
+    /*
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      will-change: opacity, transform;
+    }
+    .animate-on-scroll.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    */
+    /* Nota: Las animaciones específicas (.animated-component, .team-member-card.animate-on-scroll)
+       definidas anteriormente tomarán precedencia. */
+
+
+    /* --- ================== NUEVOS ESTILOS: SECCIÓN REFERRALS (#referrals) ================== --- */
+
+    .referral-section {
+      background-color: var(--akatsuki-dark-bg); /* Fondo oscuro consistente */
+      padding: 100px 40px; /* Padding estándar */
+      border-top: 1px solid var(--akatsuki-dark-gray); /* Borde superior */
       text-align: center;
-      padding: 20px;
-  }
-  .team-member-image {
-      flex: 0 0 120px; /* Imagen más pequeña en móvil */
-      height: 120px;
-      margin-right: 0;
-      margin-bottom: 20px; /* Espacio debajo de la imagen */
-  }
-  .team-member-info {
-      text-align: center;
-  }
-  .team-member-info h3 {
-      font-size: 1.5rem;
-  }
-  .team-member-info h4 {
-      font-size: 0.85rem;
-  }
-  .team-member-info p {
-      font-size: 0.85rem;
-  }
-  /* Ajustar animación para móvil si es necesario (opcional) */
-  :root {
-     --team-animation-distance: 60px;
-     --team-animation-blur: 5px;
-  }
-}
+    }
 
-/* --- Animaciones --- */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+    /* Hereda el max-width y centrado de .section .section-content si es necesario */
+    .referral-section .section-content {
+        max-width: 700px; /* Ancho máximo para el contenido de referidos */
+        margin-left: auto;
+        margin-right: auto;
+    }
 
-/* --- Dollar Rain --- */
-.dollar-sign {
-  position: fixed;
-  top: -50px;
-  font-size: 1.8rem;
-  font-family: Arial, sans-serif;
-  font-weight: bold;
-  user-select: none;
-  pointer-events: none;
-  z-index: 990;
-  animation-name: fall;
-  animation-timing-function: linear;
-  animation-iteration-count: 1;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-@keyframes fall {
-  0% { transform: translateY(0vh) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-}
+    .referral-section h2 {
+        /* Hereda estilos generales de .section h2 (color, fuente, línea roja) */
+        margin-bottom: 25px; /* Espacio después del título */
+    }
 
-/* --- Animaciones de Scroll (Generales) --- */
-.animate-on-scroll {
-  opacity: 0;
-  transform: translateY(30px); /* Animación por defecto más simple */
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  will-change: opacity, transform;
-}
-.animate-on-scroll.in-view {
-  opacity: 1;
-  transform: translateY(0);
-}
+    .referral-section > .section-content > p {
+        /* Estilos para el párrafo introductorio */
+        color: var(--akatsuki-light-gray);
+        font-size: 1.1rem;
+        line-height: 1.7;
+        margin-bottom: 40px; /* Espacio antes del generador */
+        max-width: 600px; /* Limita ancho del párrafo */
+        margin-left: auto;
+        margin-right: auto;
+    }
 
-/* Asegurar que las animaciones específicas del Team anulen la general */
-.team-member-card.animate-on-scroll {
-  /* Hereda will-change, transition de las reglas de Team */
-  /* Anula transform y opacity iniciales */
-  transform: translateY(0); /* Resetear translateY para que no interfiera */
-  /* El resto de transform (translateX, scaleX) se aplica abajo */
-  /* La opacidad y el filtro se gestionan en las reglas específicas de Team */
-}
-.team-member-card.animate-on-scroll[data-animation-direction="left"] {
-  opacity: 0;
-  filter: blur(var(--team-animation-blur));
-  transform: translateX(calc(-1 * var(--team-animation-distance))) scaleX(var(--team-animation-scaleX));
-}
-.team-member-card.animate-on-scroll[data-animation-direction="right"] {
-  opacity: 0;
-  filter: blur(var(--team-animation-blur));
-  transform: translateX(var(--team-animation-distance)) scaleX(var(--team-animation-scaleX));
-}
-.team-member-card.animate-on-scroll.in-view {
-  opacity: 1;
-  transform: translateX(0) scaleX(1);
-  filter: blur(0);
-}
+    .referral-generator-container {
+        background-color: var(--akatsuki-dark-gray); /* Fondo ligeramente distinto */
+        padding: 30px 35px;
+        border-radius: 8px;
+        border: 1px solid #444;
+        max-width: 550px; /* Ancho máximo del contenedor */
+        margin: 0 auto 40px auto; /* Centrado y espacio inferior */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .referral-label {
+        display: block; /* Para que ocupe su línea */
+        color: var(--akatsuki-light-gray);
+        font-size: 0.95rem;
+        font-weight: 500;
+        margin-bottom: 15px; /* Espacio antes del input */
+        text-align: left; /* Alinear etiqueta a la izquierda */
+    }
+
+    .referral-input {
+        display: block; /* Ocupa todo el ancho */
+        width: 100%;
+        padding: 12px 15px;
+        margin-bottom: 25px; /* Espacio antes del botón */
+        background-color: #222; /* Fondo oscuro para input */
+        border: 1px solid #555;
+        border-radius: 5px;
+        color: var(--akatsuki-white);
+        font-size: 1rem;
+        font-family: var(--font-secondary);
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .referral-input::placeholder {
+        color: #777;
+        font-style: italic;
+    }
+
+    .referral-input:focus {
+        outline: none;
+        border-color: var(--akatsuki-red);
+        box-shadow: 0 0 8px rgba(204, 0, 0, 0.3);
+    }
+
+    .referral-button {
+        /* Hereda algunos estilos de .cta-button pero permite personalización */
+        display: inline-block; /* Para que no ocupe todo el ancho */
+        width: auto; /* Ancho automático */
+        padding: 12px 35px; /* Padding específico */
+        font-family: var(--font-primary);
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        background-color: var(--akatsuki-red);
+        color: var(--akatsuki-white);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        margin-bottom: 25px; /* Espacio antes del área de salida */
+    }
+
+    .referral-button:hover {
+        background-color: #A00000; /* Rojo más oscuro al pasar el mouse */
+        transform: scale(1.03);
+    }
+     /* Estilo para cuando el botón esté deshabilitado (ej. mientras carga) */
+    .referral-button:disabled {
+        background-color: var(--akatsuki-dark-gray);
+        color: var(--footer-text-color);
+        cursor: not-allowed;
+        transform: none;
+    }
+
+
+    .referral-output-area {
+        background-color: #1a1a1a; /* Fondo muy oscuro para el resultado */
+        border: 1px dashed #444; /* Borde punteado sutil */
+        border-radius: 5px;
+        padding: 15px;
+        min-height: 60px; /* Altura mínima */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        word-break: break-all; /* Para que los enlaces largos se corten */
+        transition: background-color 0.3s ease;
+    }
+
+    .referral-output-area p {
+        margin: 0;
+        font-size: 0.95rem;
+        color: var(--akatsuki-light-gray);
+        font-style: italic; /* Estilo por defecto */
+    }
+     /* Estilo cuando se muestra el enlace real */
+    .referral-output-area.has-link p {
+         font-style: normal;
+         font-weight: bold;
+         color: var(--akatsuki-white);
+         /* Podríamos añadir un icono de copiar aquí con JS */
+    }
+    /* Estilo para mensajes de error */
+    .referral-output-area.has-error p {
+        font-style: normal;
+        font-weight: bold;
+        color: var(--akatsuki-red); /* Rojo para errores */
+    }
+     /* Estilo para mensaje de carga */
+     .referral-output-area.is-loading p {
+         font-style: italic;
+         color: var(--akatsuki-light-gray);
+         /* Podríamos añadir un spinner aquí */
+     }
+
+
+    .referral-info {
+        margin-top: 30px; /* Espacio sobre el texto informativo final */
+        font-size: 0.9rem;
+        color: var(--footer-text-color); /* Color gris claro para info adicional */
+        line-height: 1.6;
+    }
+    .referral-info p {
+        margin-bottom: 10px;
+    }
+
+
+    /* --- Ajustes Responsivos para Referrals --- */
+
+    @media (max-width: 992px) {
+      .referral-section {
+        padding: 80px 30px; /* Ajustar padding */
+      }
+    }
+
+    @media (max-width: 768px) {
+       .referral-section {
+         padding: 80px 20px; /* Padding móvil estándar */
+       }
+       .referral-generator-container {
+         padding: 25px 20px;
+         max-width: 90%;
+       }
+       .referral-section > .section-content > p {
+         font-size: 1rem; /* Ajustar tamaño de fuente intro */
+         margin-bottom: 30px;
+       }
+       .referral-input { padding: 10px 12px; }
+       .referral-button { padding: 10px 25px; }
+       .referral-output-area { padding: 12px; font-size: 0.9rem; }
+       .referral-info { font-size: 0.85rem; }
+    }
+
+    /* Los ajustes para max-width: 480px ya se añadieron arriba */
+
+    /* --- ================== FIN ESTILOS REFERRALS ================== --- */

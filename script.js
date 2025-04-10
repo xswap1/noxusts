@@ -1,19 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- Control del Preloader (Solo Palpitación, 6.5s) ---
+    // --- Control del Preloader (Solo Palpitación, AHORA 1s) --- // MODIFICADO
     const preloader = document.getElementById('preloader');
     const preloaderLogo = document.getElementById('preloader-logo'); // Referencia al logo si es necesaria
     const body = document.body;
     let dollarInterval = null;
 
     // --- CONFIGURACIÓN DE TIEMPOS ---
-    const FADEOUT_START_DELAY = 6500; // 6.5 segundos visibles antes de empezar a ocultar
+    // VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+    const FADEOUT_START_DELAY = 1000; // <-- CAMBIADO de 2000 a 1000 (1 segundo)
+    // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     const preloaderFadeDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--preloader-fade-duration') || '0.8') * 1000;
 
     if (preloader) {
       // Asume que 'loading' class está en el HTML inicial
       window.onload = () => {
-        console.log("Window loaded. Starting preloader sequence (6.5s - Palpitate Only).");
+        console.log("Window loaded. Starting preloader sequence (1s - Palpitate Only)."); // Mensaje actualizado
 
         // Iniciar el desvanecimiento del preloader después del delay TOTAL configurado
         setTimeout(() => {
@@ -35,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
               }, preloaderFadeDuration);
           }
 
-        }, FADEOUT_START_DELAY); // Espera 6.5 segundos
+        }, FADEOUT_START_DELAY); // Espera AHORA 1 segundo
       };
     } else {
        console.warn("Preloader element not found.");
@@ -368,7 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // !!! MUY IMPORTANTE: REEMPLAZA ESTA URL DE EJEMPLO !!!
         // Debes reemplazarla con la URL que obtengas al desplegar tu Google Apps Script como Web App.
-        const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbylxjvSMWq1_3gVlRiIV92mSeW0VxPRVt2_OX7fpmO1F-zLkaWUvtM32CCs5MNdsR6R/exec';
+        const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbylxjvSMWq1_3gVlRiIV92mSeW0VxPRVt2_OX7fpmO1F-zLkaWUvtM32CCs5MNdsR6R/exec'; // ¡URL de ejemplo!
 
         generateButton.addEventListener('click', async () => {
             const identifier = referralIdentifierInput.value.trim();

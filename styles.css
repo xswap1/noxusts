@@ -62,7 +62,7 @@ body {
   background-color: var(--akatsuki-black);
   color: var(--akatsuki-light-gray);
   line-height: 1.6;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Evita scroll horizontal */
   position: relative;
 }
 body.loading {
@@ -1070,11 +1070,13 @@ header {
   /* La animación se define abajo */
 }
 .team-member-image {
-  flex: 0 0 180px; /* Ancho fijo para la imagen */
-  height: 180px; /* Altura fija para la imagen */
+  /* === UPDATED STYLES === */
+  flex: 0 0 150px; /* Ancho fijo más pequeño */
+  height: 150px; /* Altura fija más pequeña */
   margin-right: 30px;
-  border-radius: 50%; /* Hace la imagen redonda */
-  overflow: hidden; /* Asegura que la imagen no se salga del círculo */
+  border-radius: 8px; /* Bordes ligeramente redondeados (cuadrado) */
+  /* === END UPDATED STYLES === */
+  overflow: hidden; /* Asegura que la imagen no se salga del contenedor */
   border: 3px solid var(--akatsuki-red); /* Borde rojo */
   box-shadow: 0 0 10px rgba(204, 0, 0, 0.4);
 }
@@ -1247,371 +1249,385 @@ header {
     margin-bottom: 0; /* Sin margen inferior, usa el borde */
     overflow: hidden; /* Para transición de altura */
 }
+
+/* ----- Continuación desde la primera mitad ----- */
+
 .faq-item:last-child {
-    border-bottom: none; /* Quita el borde del último elemento */
+  border-bottom: none; /* Quita el borde del último elemento */
 }
 
 .faq-question {
-    background-color: transparent;
-    border: none;
-    width: 100%;
-    padding: 18px 25px; /* Padding */
-    text-align: left;
-    font-family: var(--font-secondary);
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--akatsuki-light-gray);
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background-color 0.2s ease;
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  padding: 18px 25px; /* Padding */
+  text-align: left;
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--akatsuki-light-gray);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease;
 }
 
 .faq-question:hover {
-    background-color: rgba(255, 255, 255, 0.03); /* Hover muy sutil */
+  background-color: rgba(255, 255, 255, 0.03); /* Hover muy sutil */
 }
 
 .faq-item.active .faq-question {
-     color: var(--akatsuki-white); /* Cambia color de la pregunta al abrir */
+   color: var(--akatsuki-white); /* Cambia color de la pregunta al abrir */
 }
 
 /* Indicador de Chevron */
 .faq-indicator {
-    width: 12px;
-    height: 12px;
-    border-style: solid;
-    border-color: var(--akatsuki-light-gray);
-    border-width: 0 2px 2px 0; /* Forma > */
-    display: inline-block;
-    transform: rotate(45deg); /* Apunta abajo */
-    transition: transform 0.3s ease, border-color 0.3s ease;
-    margin-left: 15px;
-    flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border-style: solid;
+  border-color: var(--akatsuki-light-gray);
+  border-width: 0 2px 2px 0; /* Forma > */
+  display: inline-block;
+  transform: rotate(45deg); /* Apunta abajo */
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  margin-left: 15px;
+  flex-shrink: 0;
 }
 
 .faq-item.active .faq-indicator {
-    transform: rotate(-135deg); /* Apunta arriba */
-    border-color: var(--akatsuki-white);
+  transform: rotate(-135deg); /* Apunta arriba */
+  border-color: var(--akatsuki-white);
 }
 
 .faq-answer {
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    padding: 0 25px; /* Padding horizontal */
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: var(--akatsuki-light-gray);
-    background-color: rgba(0,0,0, 0.1);
-    transition: max-height 0.4s ease-out,
-                opacity 0.3s ease-in-out 0.1s, /* Delay en opacity */
-                padding-top 0.4s ease-out,
-                padding-bottom 0.4s ease-out;
-    will-change: max-height, opacity, padding;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0 25px; /* Padding horizontal */
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--akatsuki-light-gray);
+  background-color: rgba(0,0,0, 0.1);
+  transition: max-height 0.4s ease-out,
+              opacity 0.3s ease-in-out 0.1s, /* Delay en opacity */
+              padding-top 0.4s ease-out,
+              padding-bottom 0.4s ease-out;
+  will-change: max-height, opacity, padding;
 }
 
 .faq-item.active .faq-answer {
-    max-height: 400px; /* Ajustar si es necesario */
-    opacity: 1;
-    padding-top: 15px;
-    padding-bottom: 20px;
-    transition-delay: 0s; /* Reset delay al abrir */
+  max-height: 400px; /* Ajustar si es necesario */
+  opacity: 1;
+  padding-top: 15px;
+  padding-bottom: 20px;
+  transition-delay: 0s; /* Reset delay al abrir */
 }
 /* --- Fin Estilos FAQ --- */
 
 /* --- FOOTER --- */
 footer {
-  background: var(--akatsuki-black);
-  color: var(--footer-text-color);
-  text-align: center;
-  padding: 50px 20px;
-  border-top: 1px solid var(--akatsuki-dark-gray);
-  position: relative;
-  z-index: 5;
+background: var(--akatsuki-black);
+color: var(--footer-text-color);
+text-align: center;
+padding: 50px 20px;
+border-top: 1px solid var(--akatsuki-dark-gray);
+position: relative;
+z-index: 5;
 }
 footer p {
-  font-size: 0.9rem;
-  margin-bottom: 20px;
+font-size: 0.9rem;
+margin-bottom: 20px;
 }
 .social-links a {
-  color: var(--footer-text-color);
-  margin: 0 12px;
-  font-size: 1.5rem;
-  transition: color 0.3s ease, transform 0.3s ease;
-  display: inline-block;
+color: var(--footer-text-color);
+margin: 0 12px;
+font-size: 1.5rem;
+transition: color 0.3s ease, transform 0.3s ease;
+display: inline-block;
 }
 .social-links a:hover {
-  color: var(--akatsuki-red);
-  transform: scale(1.2);
+color: var(--akatsuki-red);
+transform: scale(1.2);
 }
 
 /* --- RESPONSIVE DESIGN --- */
 @media (max-width: 992px) {
-  /* Packs */
-  #new-section { padding: 80px 20px; }
-  .packs-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 50px;
-  }
-  .pack-card {
-    max-width: 500px;
-    width: 90%;
-    min-width: unset;
-  }
-  .pack-card:hover {
-     transform: translateY(-5px) scale(1.02); /* Efecto hover más sutil */
-  }
-  .tag.popular-tag {
-    top: 15px;
-    right: -40px;
-    width: 130px;
-    font-size: 0.75rem;
-    padding: 5px 0;
-  }
-
-  /* Focus & Guidance */
-  .focus-guidance-container {
-    flex-direction: column;
-  }
-  .focus-guidance-image {
-    flex-basis: auto; /* Reset base */
-    min-height: 350px;
-    order: 1; /* Imagen primero */
-  }
-  .focus-guidance-text {
-    flex-basis: auto; /* Reset base */
-    padding: 40px 30px;
-    order: 2; /* Texto después */
-    text-align: center;
-  }
-  .focus-guidance-text h2 {
-     font-size: clamp(1.8rem, 5vw, 2.2rem);
-  }
-   .focus-guidance-text p {
-     max-width: 100%;
-     font-size: 1rem;
-     margin-left: auto;
-     margin-right: auto;
-  }
-  .focus-guidance-text .focus-cta {
-    align-self: center; /* Centrar botón */
-  }
-
-  /* Team Section */
-  .team-container {
-    gap: 40px;
-    max-width: 90%;
-  }
-  .team-member-card {
-    padding: 25px;
-  }
-  .team-member-image {
-    flex: 0 0 150px;
-    height: 150px;
-    margin-right: 25px;
-  }
-  .team-member-info h3 { font-size: 1.6rem; }
-  .team-member-info h4 { font-size: 0.9rem; }
-  .team-member-info p { font-size: 0.9rem; }
+/* Packs */
+#new-section { padding: 80px 20px; }
+.packs-container {
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+}
+.pack-card {
+  max-width: 500px;
+  width: 90%;
+  min-width: unset;
+}
+.pack-card:hover {
+   transform: translateY(-5px) scale(1.02); /* Efecto hover más sutil */
+}
+.tag.popular-tag {
+  top: 15px;
+  right: -40px;
+  width: 130px;
+  font-size: 0.75rem;
+  padding: 5px 0;
 }
 
+/* Focus & Guidance */
+.focus-guidance-container {
+  flex-direction: column;
+}
+.focus-guidance-image {
+  flex-basis: auto; /* Reset base */
+  min-height: 350px;
+  order: 1; /* Imagen primero */
+}
+.focus-guidance-text {
+  flex-basis: auto; /* Reset base */
+  padding: 40px 30px;
+  order: 2; /* Texto después */
+  text-align: center;
+}
+.focus-guidance-text h2 {
+   font-size: clamp(1.8rem, 5vw, 2.2rem);
+}
+ .focus-guidance-text p {
+   max-width: 100%;
+   font-size: 1rem;
+   margin-left: auto;
+   margin-right: auto;
+}
+.focus-guidance-text .focus-cta {
+  align-self: center; /* Centrar botón */
+}
+
+/* Team Section */
+.team-container {
+  gap: 40px;
+  max-width: 90%;
+}
+.team-member-card {
+  padding: 25px;
+}
+.team-member-image {
+  /* === UPDATED Tablet Styles === */
+  flex: 0 0 130px; /* Más pequeño en tablet */
+  height: 130px; /* Más pequeño en tablet */
+  /* border-radius: 8px; Inherited */
+  /* === END UPDATED Tablet Styles === */
+  margin-right: 25px;
+}
+.team-member-info h3 { font-size: 1.6rem; }
+.team-member-info h4 { font-size: 0.9rem; }
+.team-member-info p { font-size: 0.9rem; }
+} /* Fin @media 992px */
+
 @media (max-width: 768px) {
-  /* Header */
-  header { padding: 0 20px; }
-  .logo { font-size: 1.6rem; }
-  .menu-toggle { display: block; }
-  .main-nav {
+/* Header */
+header { padding: 0 20px; }
+.logo { font-size: 1.6rem; }
+.menu-toggle { display: block; }
+.main-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 80%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(5px);
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  padding-top: calc(var(--header-height) + 20px);
+  z-index: 1050;
+  border-left: 1px solid var(--akatsuki-dark-gray);
+}
+.main-nav.is-active { transform: translateX(0); }
+.main-nav ul {
+  flex-direction: column;
+  align-items: center;
+  padding-top: 30px;
+}
+.main-nav ul li {
+  margin-left: 0;
+  margin-bottom: 35px;
+}
+.main-nav ul li a {
+  font-size: 1.3rem;
+  color: var(--akatsuki-white);
+}
+ .main-nav ul li a.active {
+  border-bottom-color: transparent; /* Quitar borde en menú móvil */
+  color: var(--akatsuki-red);
+}
+
+/* Hero */
+.hero-content h1 { font-size: clamp(2.8rem, 12vw, 4rem); }
+.hero-content h1 span { margin: 0; }
+.hero-content p { font-size: clamp(1rem, 3vw, 1.1rem); }
+.hero-content a.cta { padding: 12px 30px; }
+
+/* General Section */
+.section { padding: 80px 20px; }
+.section h2 { font-size: 2.5rem; }
+.section h2::after { width: 50px; height: 2px; }
+.section p { font-size: 1rem; }
+
+/* Packs */
+.pack-card { padding: 25px 20px; }
+.pack-card h3 { font-size: 1.6rem; }
+.pack-card .price { font-size: 1.4rem; }
+.features-list li { font-size: 0.9rem; }
+.cta-button { font-size: 0.9rem; padding: 10px 15px; }
+.tag.popular-tag { top: 12px; right: -45px; width: 110px; font-size: 0.7rem; padding: 4px 0; }
+.payment-note { font-size: 0.85rem; margin-bottom: 30px; }
+
+/* Choice & Comparison (Fusionada - Responsivo Tablet/Móvil) */
+#choice-comparison { padding: 80px 20px 60px 20px; } /* Ajuste padding móvil */
+#choice-comparison .choice-comparison-wrapper { gap: 40px; } /* Menos espacio en móvil */
+#choice-comparison .choice-title { font-size: 2.5rem; }
+#choice-comparison .choice-subtitle { font-size: 1rem; }
+#choice-comparison .comparison-container {
+    flex-direction: column; /* Apilar columnas */
+    border: 1px solid var(--akatsuki-dark-gray);
+    border-radius: 8px;
+    background-color: var(--akatsuki-dark-bg);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+ #choice-comparison .column-active {
+     border-left: none;
+     border-top: 1px solid #555; /* Separador */
+ }
+ #choice-comparison .comparison-column {
+     padding: 30px 25px; /* Menos padding interno */
+ }
+#choice-comparison .comparison-title { font-size: 1.8rem; }
+#choice-comparison .comparison-subline
+#choice-comparison .comparison-subline { font-size: 1rem; min-height: auto; margin-bottom: 25px; }
+    #choice-comparison .comparison-price { min-height: auto; margin-bottom: 25px; gap: 8px; }
+    #choice-comparison .comparison-price .original-price s { font-size: 1.3rem; }
+    #choice-comparison .comparison-price .arrow { font-size: 1.5rem; }
+    #choice-comparison .comparison-price .discounted-price { font-size: 2rem; animation: none; } /* No flotar */
+    #choice-comparison .comparison-price .price-tag { font-size: 0.8rem; }
+    #choice-comparison .comparison-list { max-width: 100%; margin-bottom: 30px; }
+    #choice-comparison .comparison-list li { font-size: 0.9rem; padding-left: 20px; }
+    #choice-comparison .comparison-cta { width: 90%; }
+    #choice-comparison .video-frame-container { max-width: 95%; }
+    /* Ajustar distancia de animación para móviles */
+    :root { /* Re-declarado dentro de media query para sobreescribir */
+        --choice-anim-distance-y: 30px;
+        --choice-anim-distance-x: 40px;
+        /* Team anim */
+        --team-animation-distance: 60px;
+        --team-animation-blur: 5px;
+    }
+
+
+    /* About */
+    #about { padding: 100px 20px; min-height: 60vh; }
+    #about h2 { font-size: clamp(2.2rem, 8vw, 3rem); margin-bottom: 30px; }
+    #about p { font-size: clamp(1rem, 3.5vw, 1.1rem); }
+
+    /* Focus & Guidance (móvil) */
+     .focus-guidance-image { min-height: 300px; }
+     .focus-guidance-text { padding: 35px 25px; }
+
+    /* Team Section (móvil) */
+    .team-container { max-width: 100%; gap: 30px; }
+    .team-member-card { flex-direction: column; text-align: center; padding: 20px; }
+    .team-member-image {
+      /* === UPDATED Mobile Styles === */
+      flex: 0 0 100px; /* Aún más pequeño en móvil */
+      height: 100px; /* Aún más pequeño en móvil */
+      /* border-radius: 8px; Inherited */
+      /* === END UPDATED Mobile Styles === */
+      margin-right: 0;
+      margin-bottom: 20px;
+    }
+    .team-member-info { text-align: center; }
+    .team-member-info h3 { font-size: 1.5rem; }
+    .team-member-info h4 { font-size: 0.85rem; }
+    .team-member-info p { font-size: 0.85rem; }
+
+
+    /* FAQ */
+    #faq { padding: 80px 20px; }
+    #faq h2 { font-size: 2.3rem; }
+    .faq-question { padding: 16px 20px; font-size: 0.95rem; }
+    .faq-indicator { width: 10px; height: 10px; }
+    .faq-answer { padding: 0 20px; font-size: 0.9rem; }
+     .faq-item.active .faq-answer { padding-top: 12px; padding-bottom: 18px; }
+  } /* Fin @media (max-width: 768px) */
+
+  @media (max-width: 480px) {
+    /* Choice/Comparison (móvil pequeño) */
+     #choice-comparison .choice-title { font-size: 2.2rem; }
+     #choice-comparison .comparison-title { font-size: 1.6rem; }
+     #choice-comparison .comparison-price .discounted-price { font-size: 1.8rem; }
+
+    /* FAQ (móvil pequeño) */
+     #faq h2 { font-size: 2rem; }
+     .faq-question { padding: 14px 15px; font-size: 0.9rem; }
+     .faq-indicator { width: 9px; height: 9px; border-width: 0 1.5px 1.5px 0; }
+     .faq-answer { font-size: 0.85rem; padding: 0 15px; }
+
+
+  } /* Fin @media (max-width: 480px) */
+
+
+  /* --- Animaciones Base --- */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Dollar Rain */
+  .dollar-sign {
     position: fixed;
-    top: 0;
-    right: 0;
-    width: 80%;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.9);
-    backdrop-filter: blur(5px);
-    transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
-    padding-top: calc(var(--header-height) + 20px);
-    z-index: 1050;
-    border-left: 1px solid var(--akatsuki-dark-gray);
+    top: -50px;
+    font-size: 1.8rem;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    user-select: none;
+    pointer-events: none;
+    z-index: 990;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: 1; /* Solo una vez */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   }
-  .main-nav.is-active { transform: translateX(0); }
-  .main-nav ul {
-    flex-direction: column;
-    align-items: center;
-    padding-top: 30px;
-  }
-  .main-nav ul li {
-    margin-left: 0;
-    margin-bottom: 35px;
-  }
-  .main-nav ul li a {
-    font-size: 1.3rem;
-    color: var(--akatsuki-white);
-  }
-   .main-nav ul li a.active {
-    border-bottom-color: transparent; /* Quitar borde en menú móvil */
-    color: var(--akatsuki-red);
+  @keyframes fall {
+    0% { transform: translateY(0vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
   }
 
-  /* Hero */
-  .hero-content h1 { font-size: clamp(2.8rem, 12vw, 4rem); }
-  .hero-content h1 span { margin: 0; }
-  .hero-content p { font-size: clamp(1rem, 3vw, 1.1rem); }
-  .hero-content a.cta { padding: 12px 30px; }
-
-  /* General Section */
-  .section { padding: 80px 20px; }
-  .section h2 { font-size: 2.5rem; }
-  .section h2::after { width: 50px; height: 2px; }
-  .section p { font-size: 1rem; }
-
-  /* Packs */
-  .pack-card { padding: 25px 20px; }
-  .pack-card h3 { font-size: 1.6rem; }
-  .pack-card .price { font-size: 1.4rem; }
-  .features-list li { font-size: 0.9rem; }
-  .cta-button { font-size: 0.9rem; padding: 10px 15px; }
-  .tag.popular-tag { top: 12px; right: -45px; width: 110px; font-size: 0.7rem; padding: 4px 0; }
-  .payment-note { font-size: 0.85rem; margin-bottom: 30px; }
-
-  /* Choice & Comparison (Fusionada - Responsivo Tablet/Móvil) */
-  #choice-comparison { padding: 80px 20px 60px 20px; } /* Ajuste padding móvil */
-  #choice-comparison .choice-comparison-wrapper { gap: 40px; } /* Menos espacio en móvil */
-  #choice-comparison .choice-title { font-size: 2.5rem; }
-  #choice-comparison .choice-subtitle { font-size: 1rem; }
-  #choice-comparison .comparison-container {
-      flex-direction: column; /* Apilar columnas */
-      border: 1px solid var(--akatsuki-dark-gray);
-      border-radius: 8px;
-      background-color: var(--akatsuki-dark-bg);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-      overflow: hidden;
-  }
-   #choice-comparison .column-active {
-       border-left: none;
-       border-top: 1px solid #555; /* Separador */
-   }
-   #choice-comparison .comparison-column {
-       padding: 30px 25px; /* Menos padding interno */
-   }
-  #choice-comparison .comparison-title { font-size: 1.8rem; }
-  #choice-comparison .comparison-subline
-  #choice-comparison .comparison-subline { font-size: 1rem; min-height: auto; margin-bottom: 25px; }
-      #choice-comparison .comparison-price { min-height: auto; margin-bottom: 25px; gap: 8px; }
-      #choice-comparison .comparison-price .original-price s { font-size: 1.3rem; }
-      #choice-comparison .comparison-price .arrow { font-size: 1.5rem; }
-      #choice-comparison .comparison-price .discounted-price { font-size: 2rem; animation: none; } /* No flotar */
-      #choice-comparison .comparison-price .price-tag { font-size: 0.8rem; }
-      #choice-comparison .comparison-list { max-width: 100%; margin-bottom: 30px; }
-      #choice-comparison .comparison-list li { font-size: 0.9rem; padding-left: 20px; }
-      #choice-comparison .comparison-cta { width: 90%; }
-      #choice-comparison .video-frame-container { max-width: 95%; }
-      /* Ajustar distancia de animación para móviles */
-      :root {
-          --choice-anim-distance-y: 30px;
-          --choice-anim-distance-x: 40px;
-          /* Team anim */
-          --team-animation-distance: 60px;
-          --team-animation-blur: 5px;
-      }
-
-
-      /* About */
-      #about { padding: 100px 20px; min-height: 60vh; }
-      #about h2 { font-size: clamp(2.2rem, 8vw, 3rem); margin-bottom: 30px; }
-      #about p { font-size: clamp(1rem, 3.5vw, 1.1rem); }
-
-      /* Focus & Guidance (móvil) */
-       .focus-guidance-image { min-height: 300px; }
-       .focus-guidance-text { padding: 35px 25px; }
-
-      /* Team Section (móvil) */
-      .team-container { max-width: 100%; gap: 30px; }
-      .team-member-card { flex-direction: column; text-align: center; padding: 20px; }
-      .team-member-image { flex: 0 0 120px; height: 120px; margin-right: 0; margin-bottom: 20px; }
-      .team-member-info { text-align: center; }
-      .team-member-info h3 { font-size: 1.5rem; }
-      .team-member-info h4 { font-size: 0.85rem; }
-      .team-member-info p { font-size: 0.85rem; }
-
-
-      /* FAQ */
-      #faq { padding: 80px 20px; }
-      #faq h2 { font-size: 2.3rem; }
-      .faq-question { padding: 16px 20px; font-size: 0.95rem; }
-      .faq-indicator { width: 10px; height: 10px; }
-      .faq-answer { padding: 0 20px; font-size: 0.9rem; }
-       .faq-item.active .faq-answer { padding-top: 12px; padding-bottom: 18px; }
-    } /* Fin @media (max-width: 768px) */
-
-    @media (max-width: 480px) {
-      /* Choice/Comparison (móvil pequeño) */
-       #choice-comparison .choice-title { font-size: 2.2rem; }
-       #choice-comparison .comparison-title { font-size: 1.6rem; }
-       #choice-comparison .comparison-price .discounted-price { font-size: 1.8rem; }
-
-      /* FAQ (móvil pequeño) */
-       #faq h2 { font-size: 2rem; }
-       .faq-question { padding: 14px 15px; font-size: 0.9rem; }
-       .faq-indicator { width: 9px; height: 9px; border-width: 0 1.5px 1.5px 0; }
-       .faq-answer { font-size: 0.85rem; padding: 0 15px; }
-
-
-    } /* Fin @media (max-width: 480px) */
-
-
-    /* --- Animaciones Base --- */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Dollar Rain */
-    .dollar-sign {
-      position: fixed;
-      top: -50px;
-      font-size: 1.8rem;
-      font-family: Arial, sans-serif;
-      font-weight: bold;
-      user-select: none;
-      pointer-events: none;
-      z-index: 990;
-      animation-name: fall;
-      animation-timing-function: linear;
-      animation-iteration-count: 1; /* Solo una vez */
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    }
-    @keyframes fall {
-      0% { transform: translateY(0vh) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-    }
-
-    /* Animación Flotante para Precio */
-    @keyframes floatSmooth {
-      0%, 100% {
-        transform: translateY(0);
-        text-shadow: 0 0 8px rgba(204, 0, 0, 0.6);
-      }
-      50% {
-        transform: translateY(-6px);
-        text-shadow: 0 4px 15px rgba(204, 0, 0, 0.8);
-      }
-    }
-
-    /* --- Animaciones de Scroll (Generales - Comentadas/Anuladas) --- */
-    /*
-    .animate-on-scroll {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-      will-change: opacity, transform;
-    }
-    .animate-on-scroll.in-view {
-      opacity: 1;
+  /* Animación Flotante para Precio */
+  @keyframes floatSmooth {
+    0%, 100% {
       transform: translateY(0);
+      text-shadow: 0 0 8px rgba(204, 0, 0, 0.6);
     }
-    */
-    /* Nota: Las animaciones específicas (.animated-component, .team-member-card.animate-on-scroll)
-       definidas anteriormente tomarán precedencia. */
+    50% {
+      transform: translateY(-6px);
+      text-shadow: 0 4px 15px rgba(204, 0, 0, 0.8);
+    }
+  }
+
+  /* --- Animaciones de Scroll (Generales - Comentadas/Anuladas) --- */
+  /*
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    will-change: opacity, transform;
+  }
+  .animate-on-scroll.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  */
+  /* Nota: Las animaciones específicas (.animated-component, .team-member-card.animate-on-scroll)
+     definidas anteriormente tomarán precedencia. */
